@@ -2,14 +2,13 @@ import React, { Component } from "react";
 
 class Unit extends Component {
   render() {
-    const t = this.props.type === true;
+    const t = this.props.type === false;
+    const className =
+      "p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800" +
+      (t ? " border-gray-700" : " border-orange-700");
     return (
-      <div
-        className={
-          "p-2 rounded-r cursor-pointer text-center bg-gray-800 border-l-4 border-gray-700"
-        }
-      >
-        <div className="flex pl-5 text-indigo-200 capitalize font-medium ">
+      <div className={className}>
+        <div className="flex pl-5 text-gray-200 capitalize font-medium ">
           <span className="flex-1">Unique ID</span>
           <span className="flex-1">Mac</span>
           <span className="flex-1">Description</span>
