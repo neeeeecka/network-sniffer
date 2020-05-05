@@ -4,11 +4,11 @@ class Unit extends Component {
   render() {
     const t = this.props.type === false;
     const className =
-      "p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800" +
+      "p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700");
     return (
       <div className={className}>
-        <div className="flex pl-5 text-gray-200 capitalize font-medium ">
+        <div className="flex pl-5 text-gray-200 capitalize font-medium">
           <span className="flex-1">Unique ID</span>
           <span className="flex-1">Mac</span>
           <span className="flex-1">Description</span>
