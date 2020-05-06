@@ -7,11 +7,12 @@ class Unit extends Component {
       "children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700");
     const d = this.props.data;
+    console.log(this.props.holdingLocation.uid, d.uid);
     return (
       <div
         className={className}
-        onClick={() => {
-          this.props.onUnitClick(this.props.index, this.props.type);
+        onMouseDown={() => {
+          this.props.onUnitClick(d.uid);
         }}
       >
         <div className="flex pl-5 text-gray-200 capitalize font-medium">
@@ -45,10 +46,12 @@ class UnitContainer extends Component {
     this.props.units.forEach((unit, i) => {
       units.push(
         <Unit
+          key={unit.uid}
           index={i}
           type={this.props.type}
           onUnitClick={this.props.onUnitClick}
           data={unit}
+          holdingLocation={this.props.holdingLocation}
         />
       );
     });
