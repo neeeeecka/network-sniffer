@@ -106,6 +106,9 @@ class UnitContainer extends Component {
         </span>
         <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
           {this.getUnits()}
+          <div
+            className={"animate-height " + (this.props.expand ? "h-16" : "h-0")}
+          />
         </div>
       </div>
     );

@@ -82,8 +82,11 @@ class Index extends Component {
   componentDidMount() {
     window.addEventListener("mouseup", ev => {
       const holdingLocation = this.state.holdingLocation;
+      const containers = { true: false, false: false };
+
       this.setState(
         {
+          containers: containers,
           holdingLocation: {
             rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
             uid: holdingLocation.uid,
@@ -147,14 +150,15 @@ class Index extends Component {
         isHolded: true
       };
 
-      this.setState({ holdingLocation: newHoldState });
-
+      const containers = { true: false, false: false };
       if (this.falseContainer.rect.intersectsPoint(currentMousePos)) {
-        console.log("over cont 1");
+        containers[false] = true;
       }
       if (this.trueContainer.rect.intersectsPoint(currentMousePos)) {
-        console.log("over cont 2");
+        containers[true] = true;
       }
+
+      this.setState({ holdingLocation: newHoldState, containers: containers });
     }
   };
 
@@ -200,6 +204,7 @@ class Index extends Component {
             }}
             onUnitInit={this.unitInit}
             holdState={this.state.holdingLocation}
+            expand={this.state.containers[false]}
           />
           <UnitContainer
             title="Blocked users"
@@ -211,6 +216,7 @@ class Index extends Component {
             }}
             onUnitInit={this.unitInit}
             holdState={this.state.holdingLocation}
+            expand={this.state.containers[true]}
           />
         </div>
       </div>

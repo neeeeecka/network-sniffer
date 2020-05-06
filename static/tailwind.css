@@ -2,6 +2,9 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+.animate-height {
+  transition: all 0.25s ease;
+}
 .transform-duration-0 {
   transition: none;
 }
