@@ -211,7 +211,7 @@ class Index extends Component {
             }}
             onUnitInit={this.unitInit}
             holdState={this.state.holdingLocation}
-            expand={this.state.containers[false]}
+            expand={this.state.containers.active}
           />
           <UnitContainer
             title="Blocked users"
@@ -222,7 +222,7 @@ class Index extends Component {
             }}
             onUnitInit={this.unitInit}
             holdState={this.state.holdingLocation}
-            expand={this.state.containers[true]}
+            expand={this.state.containers.blocked}
           />
         </div>
       </div>
