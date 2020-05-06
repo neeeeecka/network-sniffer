@@ -149,38 +149,15 @@ class Index extends Component {
 
       this.setState({ holdingLocation: newHoldState });
 
-      if (
-        this.cursorIntersects(
-          currentMousePos.x,
-          currentMousePos.y,
-          this.falseContainer.x,
-          this.falseContainer.y,
-          this.falseContainer.w,
-          this.falseContainer.h
-        )
-      ) {
+      if (this.falseContainer.rect.intersectsPoint(currentMousePos)) {
         console.log("over cont 1");
       }
-      if (
-        this.cursorIntersects(
-          currentMousePos.x,
-          currentMousePos.y,
-          this.trueContainer.x,
-          this.trueContainer.y,
-          this.trueContainer.w,
-          this.trueContainer.h
-        )
-      ) {
+      if (this.trueContainer.rect.intersectsPoint(currentMousePos)) {
         console.log("over cont 2");
       }
     }
   };
-  cursorIntersects(x1, y1, x2, y2, w2, h2) {
-    if (x1 >= x2 && x1 <= x2 + w2 && y1 >= y2 && y1 <= y2 + h2) {
-      return true;
-    }
-    return false;
-  }
+
   unitInit = (uid, el) => {
     const newUnits = [...this.state.units];
     const found = newUnits.find(unit => unit.data.uid === uid);
@@ -196,10 +173,10 @@ class Index extends Component {
     const rect = el.getBoundingClientRect();
     const container = {
       el: el,
-      w: el.offsetWidth,
-      h: el.offsetHeight,
-      x: rect.left,
-      y: rect.top
+      rect: new Rectangle(
+        new Vector2(rect.left, rect.top),
+        new Vector2(el.offsetWidth, el.offsetHeight)
+      )
     };
     if (type) {
       this.trueContainer = container;

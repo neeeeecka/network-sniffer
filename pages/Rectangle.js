@@ -7,10 +7,10 @@ class Rectangle {
   }
   intersectsPoint(point) {
     return (
-      point.x >= rect2.xy.x &&
-      point.x <= rect2.xy.x + rect2.wh.x &&
-      point.y >= rect2.xy.y &&
-      point.y <= rect2.xy.y + rect2.wh.y
+      point.x >= this.xy.x &&
+      point.x <= this.xy.x + this.wh.x &&
+      point.y >= this.xy.y &&
+      point.y <= this.xy.y + this.wh.y
     );
   }
   intersects(rect2) {
