@@ -17,7 +17,7 @@ class Unit extends Component {
     );
   }
   render() {
-    const t = this.props.type === false;
+    const t = this.props.data.type === "active";
 
     const holdState = this.props.holdState;
     const xy = holdState.rect.xy;
@@ -80,7 +80,6 @@ class UnitContainer extends Component {
         <Unit
           key={unit.data.uid}
           index={i}
-          type={this.props.type}
           onUnitClick={this.props.onUnitClick}
           onUnitInit={this.props.onUnitInit}
           data={unit.data}

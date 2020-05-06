@@ -13,7 +13,7 @@ class Index extends Component {
           uid: "3244ff730e03169f0c3e720",
           mac: "5f4-123f-323f-32",
           description: "windows 10 pc",
-          type: false
+          type: "active"
         },
         el: undefined
       },
@@ -22,7 +22,7 @@ class Index extends Component {
           uid: "5eb1581730e03167f0c3e921",
           mac: "123-123f-53f-32",
           description: "mac osX pc",
-          type: false
+          type: "active"
         },
         el: undefined
       },
@@ -31,7 +31,7 @@ class Index extends Component {
           uid: "32133730e03fsdf",
           mac: "555-78f-53f-923",
           description: "Android",
-          type: true
+          type: "blocked"
         },
         el: undefined
       }
@@ -47,13 +47,13 @@ class Index extends Component {
       isAnim: false,
       isHolded: false
     },
-    selectedUnit: { initialPos: { x: 0, y: 0 } },
+    selectedUnit: undefined,
     isHolding: false,
     shouldUpdate: false
   };
   onUnitClick = (uid, ev) => {
     this.setState({ isHolding: true });
-    const t = 0.15;
+    const t = 0.025;
     ev.persist();
     const timeout = setTimeout(() => {
       if (this.state.isHolding) {
@@ -84,14 +84,24 @@ class Index extends Component {
     window.addEventListener("mouseup", ev => {
       const holdingLocation = this.state.holdingLocation;
 
-      const containers = this.state.containers;
-      let activeCont = undefined;
-      Object.keys(this.state.containers).forEach(key => {
-        if (this.state.containers[key]) {
-          activeCont = key;
-        }
-      });
-      console.log(activeCont);
+      if (this.state.isHolding && this.state.selectedUnit) {
+        const containers = this.state.containers;
+        let activeCont = undefined;
+        Object.keys(this.state.containers).forEach(key => {
+          if (this.state.containers[key]) {
+            activeCont = key;
+          }
+        });
+        const newUnits = [...this.state.units];
+        const selectedUnit = newUnits.find(unit => {
+          return unit.data.uid === this.state.holdingLocation.uid;
+        });
+        selectedUnit.data.type =
+          activeCont !== undefined ? activeCont : selectedUnit.data.type;
+        console.log(selectedUnit.data.type);
+
+        this.setState({ units: newUnits });
+      }
       const newContainers = { active: false, blocked: false };
 
       this.setState(
@@ -104,7 +114,8 @@ class Index extends Component {
           },
           isHolding: false,
           shouldUpdate: false,
-          isHolded: false
+          isHolded: false,
+          selectedUnit: undefined
         },
         () => {
           const t = setTimeout(() => {
@@ -193,8 +204,7 @@ class Index extends Component {
         <div className="flex p-2">
           <UnitContainer
             title="Active users"
-            type={false}
-            units={this.state.units.filter(u => u.data.type === false)}
+            units={this.state.units.filter(u => u.data.type === "active")}
             onUnitClick={this.onUnitClick}
             onInit={el => {
               this.initCont(el, false);
@@ -205,8 +215,7 @@ class Index extends Component {
           />
           <UnitContainer
             title="Blocked users"
-            type={true}
-            units={this.state.units.filter(u => u.data.type === true)}
+            units={this.state.units.filter(u => u.data.type === "blocked")}
             onUnitClick={this.onUnitClick}
             onInit={el => {
               this.initCont(el, true);
