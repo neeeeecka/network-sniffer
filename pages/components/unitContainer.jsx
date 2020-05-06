@@ -21,7 +21,7 @@ class Unit extends Component {
     const xy = this.props.holdingLocation;
 
     const className =
-      "relative shadow-md children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-700 select-none" +
+      "relative shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700") +
       (xy.isAnim ? " transform-duration-25" : " transform-duration-0") +
       (xy.isHolded ? " z-10" : " z-0");
@@ -91,7 +91,14 @@ class UnitContainer extends Component {
   };
   render() {
     return (
-      <div className="w-1/2 m-1">
+      <div
+        className="w-1/2 m-1"
+        ref={el => {
+          if (el) {
+            this.props.onInit(el);
+          }
+        }}
+      >
         <span className="w-full text-gray-100 font-medium text-lg px-1 mb-1 inline-block">
           {this.props.title}
         </span>

@@ -34,6 +34,10 @@ class Index extends Component {
         el: undefined
       }
     ],
+    containers: {
+      true: null,
+      false: null
+    },
     holdingLocation: {
       x: 0,
       y: 0,
@@ -139,7 +143,6 @@ class Index extends Component {
         x: currentMousePos.x - this.lastMousePos.x,
         y: currentMousePos.y - this.lastMousePos.y
       };
-      console.log(movement);
 
       this.lastMousePos = currentMousePos;
 
@@ -159,6 +162,9 @@ class Index extends Component {
         isHolded: true
       };
       this.setState({ holdingLocation: newLocation });
+
+      if (newLocation.x) {
+      }
     }
   };
   unitInit = (uid, el) => {
@@ -169,6 +175,25 @@ class Index extends Component {
     found.initialPos = { x: rect.left, y: rect.top };
     this.setState({ units: newUnits });
   };
+  falseContainer = null;
+  trueContainer = null;
+
+  initCont = (el, type) => {
+    const rect = el.getBoundingClientRect();
+    const container = {
+      el: el,
+      w: el.offsetWidth,
+      h: el.offsetHeight,
+      x: rect.left,
+      y: rect.top
+    };
+    if (type) {
+      this.trueContainer = container;
+    } else {
+      this.falseContainer = container;
+    }
+  };
+
   render() {
     return (
       <div className="bg-gray-800 h-screen  overflow-hidden">
@@ -179,6 +204,9 @@ class Index extends Component {
             type={false}
             units={this.state.units.filter(u => u.data.type === false)}
             onUnitClick={this.onUnitClick}
+            onInit={el => {
+              this.initCont(el, false);
+            }}
             onUnitInit={this.unitInit}
             holdingLocation={this.state.holdingLocation}
           />
@@ -187,6 +215,9 @@ class Index extends Component {
             type={true}
             units={this.state.units.filter(u => u.data.type === true)}
             onUnitClick={this.onUnitClick}
+            onInit={el => {
+              this.initCont(el, true);
+            }}
             onUnitInit={this.unitInit}
             holdingLocation={this.state.holdingLocation}
           />
