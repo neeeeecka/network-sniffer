@@ -32,8 +32,8 @@ class Unit extends Component {
     return (
       <div
         className={className}
-        onMouseDown={() => {
-          this.props.onUnitClick(d.uid);
+        onMouseDown={ev => {
+          this.props.onUnitClick(d.uid, ev);
         }}
         style={style}
         ref={el => {
