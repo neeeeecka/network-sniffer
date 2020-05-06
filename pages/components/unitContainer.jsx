@@ -23,7 +23,7 @@ class Unit extends Component {
       (t ? " border-gray-700" : " border-orange-700");
     const d = this.props.data;
     const xy = this.props.holdingLocation;
-    let style = { transform: "none" };
+    let style = { transform: "tranaslate(0, 0)" };
     if (xy.uid === d.uid) {
       style = {
         transform: `translate(${xy.x}px, ${xy.y}px)`

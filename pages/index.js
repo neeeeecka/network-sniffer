@@ -46,25 +46,22 @@ class Index extends Component {
     const timeout = setTimeout(() => {
       if (this.state.isHolding) {
         const unit = this.state.units.find(unit => unit.data.uid === uid);
-        this.curMousePos = { x: ev.clientX, y: ev.clientY };
+        this.curMousePos = {
+          x: ev.clientX,
+          y: ev.clientY
+        };
         const rect = unit.el.getBoundingClientRect();
-
-        console.log(this.curMousePos.x, this.curMousePos.y);
-        console.log(rect.left, rect.top);
-        console.log(unit.el.offsetWidth, unit.el.offsetHeight);
-
-        console.log(
-          this.curMousePos.x - rect.left,
-          this.curMousePos.y - rect.top
-        );
+        this.lastMousePos = this.curMousePos;
 
         this.setState({
           holdingLocation: {
             x: 0,
             y: 0,
             uid: uid,
-            ax: this.curMousePos.x - rect.left,
-            ay: this.curMousePos.y - rect.top,
+            ax: rect.left,
+            ay: rect.top,
+            rx: this.curMousePos.x - rect.left,
+            ry: this.curMousePos.y - rect.top,
             w: unit.el.offsetWidth,
             h: unit.el.offsetHeight
           },
@@ -106,16 +103,31 @@ class Index extends Component {
   }
   selectedUnit = { initialPos: { x: 0, y: 0 } };
   moveSpeed = 1;
+
+  lastMousePos = { x: 0, y: 0 };
   update = deltaTime => {
     if (this.state.shouldUpdate) {
       //   const oldMousePos = this.state.holdingLocation;
+      const currentMousePos = this.curMousePos;
+
+      const movement = {
+        x: currentMousePos.x - this.lastMousePos.x,
+        y: currentMousePos.y - this.lastMousePos.y
+      };
+      console.log(movement);
+
+      this.lastMousePos = currentMousePos;
 
       const holdingLocation = this.state.holdingLocation;
       const newLocation = {
-        x: this.curMousePos.x - holdingLocation.ax,
-        y: this.curMousePos.y - holdingLocation.ay,
+        // x: this.curMousePos.x - holdingLocation.ax - holdingLocation.rx,
+        // y: this.curMousePos.y - holdingLocation.ay - holdingLocation.ry,
+        x: holdingLocation.x + movement.x,
+        y: holdingLocation.y + movement.y,
         ax: holdingLocation.ax,
         ay: holdingLocation.ay,
+        rx: holdingLocation.rx,
+        ry: holdingLocation.ry,
         w: holdingLocation.w,
         h: holdingLocation.h,
         uid: holdingLocation.uid
