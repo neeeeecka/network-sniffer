@@ -1,3 +1,5 @@
+import Vector2 from "./Vector2";
+
 class Rectangle {
   constructor(xy, wh) {
     this.xy = xy;
@@ -17,6 +19,13 @@ class Rectangle {
       this.xy.x + this.wh.x > rect2.xy.x &&
       this.xy.y < rect2.xy.y + rect2.wh.y &&
       this.xy.y + this.wh.y > rect2.xy.y
+    );
+  }
+  clone() {
+    console.log("clone");
+    return new Rectangle(
+      new Vector2(this.x, this.y),
+      new Vector2(this.wh.x, this.wh.y)
     );
   }
 }

@@ -40,8 +40,7 @@ class Index extends Component {
       false: null
     },
     holdingLocation: {
-      x: 0,
-      y: 0,
+      rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
       uid: null,
       anchor: { x: 0, y: 0 },
       isAnim: false,
@@ -88,8 +87,6 @@ class Index extends Component {
       this.setState(
         {
           holdingLocation: {
-            x: 0,
-            y: 0,
             rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
             uid: holdingLocation.uid,
             isAnim: true
@@ -101,7 +98,11 @@ class Index extends Component {
         () => {
           const t = setTimeout(() => {
             this.setState({
-              holdingLocation: { x: 0, y: 0, uid: null, isAnim: false }
+              holdingLocation: {
+                rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
+                uid: null,
+                isAnim: false
+              }
             });
             clearTimeout(t);
           }, 0.25 * 1000);
@@ -138,14 +139,17 @@ class Index extends Component {
       const movement = this.curMousePos.subtract(this.lastMousePos);
       this.lastMousePos = currentMousePos.clone();
 
-      const holdingLocation = this.state.holdingLocation;
-      const newLocation = {
-        x: holdingLocation.x + movement.x,
-        y: holdingLocation.y + movement.y,
-        uid: holdingLocation.uid,
+      const holdState = this.state.holdingLocation;
+      const newRect = holdState.rect.clone();
+      newRect.xy.addTo(movement);
+
+      const newHoldState = {
+        rect: newRect,
+        uid: holdState.uid,
         isHolded: true
       };
-      this.setState({ holdingLocation: newLocation });
+
+      this.setState({ holdingLocation: newHoldState });
 
       if (
         this.cursorIntersects(
@@ -220,7 +224,7 @@ class Index extends Component {
               this.initCont(el, false);
             }}
             onUnitInit={this.unitInit}
-            holdingLocation={this.state.holdingLocation}
+            holdState={this.state.holdingLocation}
           />
           <UnitContainer
             title="Blocked users"
@@ -231,7 +235,7 @@ class Index extends Component {
               this.initCont(el, true);
             }}
             onUnitInit={this.unitInit}
-            holdingLocation={this.state.holdingLocation}
+            holdState={this.state.holdingLocation}
           />
         </div>
       </div>

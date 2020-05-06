@@ -2,12 +2,12 @@ import React, { Component } from "react";
 
 class Unit extends Component {
   shouldComponentUpdate(nextProps, nextState) {
-    const nextHolding = nextProps.holdingLocation;
-    const curHolding = this.props.holdingLocation;
+    const nextHoldState = nextProps.holdState;
+    const curholdState = this.props.holdState;
 
-    const shouldAffect = nextHolding.uid === this.props.data.uid;
-    const isChanged =
-      nextHolding.x !== curHolding.x || nextHolding.y !== curHolding.y;
+    const shouldAffect = nextHoldState.uid === this.props.data.uid;
+    // console.log(nextHoldState);
+    const isChanged = !nextHoldState.rect.xy.compareTo(curholdState.rect.xy);
 
     const shouldUpdate = shouldAffect && isChanged;
 
@@ -18,7 +18,8 @@ class Unit extends Component {
   }
   render() {
     const t = this.props.type === false;
-    const xy = this.props.holdingLocation;
+
+    const xy = this.props.holdState.rect.xy;
 
     const className =
       "relative shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
@@ -83,7 +84,7 @@ class UnitContainer extends Component {
           onUnitInit={this.props.onUnitInit}
           data={unit.data}
           element={unit.el}
-          holdingLocation={this.props.holdingLocation}
+          holdState={this.props.holdState}
         />
       );
     });
