@@ -25,8 +25,8 @@ class Unit extends Component {
     const className =
       "relative shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700") +
-      (xy.isAnim ? " transform-duration-25" : " transform-duration-0") +
-      (xy.isHolded ? " z-10" : " z-0");
+      (holdState.isAnim ? " transform-duration-25" : " transform-duration-0") +
+      (holdState.isHolded ? " z-10" : " z-0");
     const d = this.props.data;
     let style = { transform: "tranaslate(0, 0)" };
     if (holdState.uid === d.uid) {
