@@ -34,7 +34,13 @@ class Index extends Component {
         el: undefined
       }
     ],
-    holdingLocation: { x: 0, y: 0, uid: null, anchor: { x: 0, y: 0 } },
+    holdingLocation: {
+      x: 0,
+      y: 0,
+      uid: null,
+      anchor: { x: 0, y: 0 },
+      isAnim: false
+    },
     selectedUnit: { initialPos: { x: 0, y: 0 } },
     isHolding: false,
     shouldUpdate: false
@@ -76,11 +82,27 @@ class Index extends Component {
   curMousePos = { x: 0, y: 0 };
   componentDidMount() {
     window.addEventListener("mouseup", ev => {
-      this.setState({
-        holdingLocation: { x: 0, y: 0, uid: null },
-        isHolding: false,
-        shouldUpdate: false
-      });
+      const holdingLocation = this.state.holdingLocation;
+      this.setState(
+        {
+          holdingLocation: {
+            x: 0,
+            y: 0,
+            uid: holdingLocation.uid,
+            isAnim: true
+          },
+          isHolding: false,
+          shouldUpdate: false
+        },
+        () => {
+          const t = setTimeout(() => {
+            this.setState({
+              holdingLocation: { x: 0, y: 0, uid: null, isAnim: false }
+            });
+            clearTimeout(t);
+          }, 2.5 * 1000);
+        }
+      );
     });
     window.addEventListener("mousemove", ev => {
       if (this.state.isHolding) {
