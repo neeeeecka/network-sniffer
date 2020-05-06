@@ -9,4 +9,10 @@ class Vector2 {
   subtract(vec2) {
     return new Vector2(this.x - vec2.x, this.y - vec2.y);
   }
+  multiply(k) {
+    return new Vector2(this.x * k, this.y * k);
+  }
+  dot(vec2) {
+    return this.x * vec2.x + this.y * vec2.y;
+  }
 }
