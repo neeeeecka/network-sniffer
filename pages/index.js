@@ -173,12 +173,24 @@ class Index extends Component {
           this.falseContainer.h
         )
       ) {
-        console.log("expand");
+        console.log("over cont 1");
+      }
+      if (
+        this.cursorIntersects(
+          currentMousePos.x,
+          currentMousePos.y,
+          this.trueContainer.x,
+          this.trueContainer.y,
+          this.trueContainer.w,
+          this.trueContainer.h
+        )
+      ) {
+        console.log("over cont 2");
       }
     }
   };
   cursorIntersects(x1, y1, x2, y2, w2, h2) {
-    if (x1 >= 0 && x1 <= x2 + w2 && y1 >= 0 && y1 <= y2 + h2) {
+    if (x1 >= x2 && x1 <= x2 + w2 && y1 >= y2 && y1 <= y2 + h2) {
       return true;
     }
     return false;
