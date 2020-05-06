@@ -23,7 +23,7 @@ class Unit extends Component {
     const xy = holdState.rect.xy;
 
     const className =
-      "relative shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
+      "animate-height relative shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700") +
       (holdState.isAnim ? " transform-duration-25" : " transform-duration-0") +
       (holdState.isHolded ? " z-10" : " z-0");
@@ -106,8 +106,10 @@ class UnitContainer extends Component {
         </span>
         <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
           {this.getUnits()}
-          <div
-            className={"animate-height " + (this.props.expand ? "h-16" : "h-0")}
+          <span
+            className={
+              "block animate-height " + (this.props.expand ? "h-16" : "h-0")
+            }
           />
         </div>
       </div>

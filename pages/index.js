@@ -116,7 +116,7 @@ class Index extends Component {
       }
     });
     var fpsInterval, now, then, elapsed;
-    fpsInterval = 1000 / 25;
+    fpsInterval = 1000 / 30;
     then = Date.now();
     const animate = () => {
       window.requestAnimationFrame(animate);

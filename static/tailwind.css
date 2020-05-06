@@ -28,7 +28,7 @@
 .children-mb-2 {
   margin-bottom: 0.5rem;
 }
-.children-mb-2:last-child {
+.children-mb-2:last-of-type {
   margin-bottom: 0;
 }
 
