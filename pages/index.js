@@ -163,10 +163,26 @@ class Index extends Component {
       };
       this.setState({ holdingLocation: newLocation });
 
-      if (newLocation.x) {
+      if (
+        this.cursorIntersects(
+          currentMousePos.x,
+          currentMousePos.y,
+          this.falseContainer.x,
+          this.falseContainer.y,
+          this.falseContainer.w,
+          this.falseContainer.h
+        )
+      ) {
+        console.log("expand");
       }
     }
   };
+  cursorIntersects(x1, y1, x2, y2, w2, h2) {
+    if (x1 >= 0 && x1 <= x2 + w2 && y1 >= 0 && y1 <= y2 + h2) {
+      return true;
+    }
+    return false;
+  }
   unitInit = (uid, el) => {
     const newUnits = [...this.state.units];
     const found = newUnits.find(unit => unit.data.uid === uid);
