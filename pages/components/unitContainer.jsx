@@ -6,6 +6,7 @@ class Unit extends Component {
     const className =
       "children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700");
+    const d = this.props.data;
     return (
       <div
         className={className}
@@ -19,9 +20,9 @@ class Unit extends Component {
           <span className="flex-1">Description</span>
         </div>
         <div className="flex pl-5 text-indigo-100 capitalize">
-          <span className="flex-1">5eb1581730e03169f0c3e720</span>
-          <span className="flex-1">5f4-123f-323f-32</span>
-          <span className="flex-1">windows 10 pc</span>
+          <span className="flex-1">{d.uid}</span>
+          <span className="flex-1">{d.mac}</span>
+          <span className="flex-1">{d.description}</span>
         </div>
         <div className="flex">
           {/* <span className="w-1/4 text-indigo-200 font-medium">

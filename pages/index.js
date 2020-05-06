@@ -7,16 +7,16 @@ class Index extends Component {
   state = {
     units: [
       {
-        uid: "5eb1581730e03169f0c3e720",
+        uid: "3244ff730e03169f0c3e720",
         mac: "5f4-123f-323f-32",
         description: "windows 10 pc",
         limit: 0.5,
         type: false
       },
       {
-        uid: "5eb1581730e03169f0c3e720",
-        mac: "5f4-123f-323f-32",
-        description: "windows 10 pc",
+        uid: "5eb1581730e03167f0c3e921",
+        mac: "123-123f-53f-32",
+        description: "mac osX pc",
         limit: 0.5,
         type: false
       }
