@@ -19,7 +19,7 @@ class Unit extends Component {
   render() {
     const t = this.props.type === false;
     const className =
-      "children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
+      "shadow-md transform-duration-0 children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-700 select-none" +
       (t ? " border-gray-700" : " border-orange-700");
     const d = this.props.data;
     const xy = this.props.holdingLocation;
@@ -36,6 +36,9 @@ class Unit extends Component {
           this.props.onUnitClick(d.uid);
         }}
         style={style}
+        ref={el => {
+          this.props.onUnitInit(d.uid, el);
+        }}
       >
         <div className="flex pl-5 text-gray-200 capitalize font-medium">
           <span className="flex-1">Unique ID</span>
@@ -72,7 +75,9 @@ class UnitContainer extends Component {
           index={i}
           type={this.props.type}
           onUnitClick={this.props.onUnitClick}
-          data={unit}
+          onUnitInit={this.props.onUnitInit}
+          data={unit.data}
+          element={unit.el}
           holdingLocation={this.props.holdingLocation}
         />
       );

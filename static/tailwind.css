@@ -2,6 +2,16 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+.transform-duration-0 {
+  transition: none;
+}
+.transform-duration-1 {
+  transition: transform 0.1s ease;
+}
+.transform-duration-15 {
+  transition: transform 0.15s ease;
+}
+
 .children-mb-1 {
   margin-bottom: 0.25rem;
 }

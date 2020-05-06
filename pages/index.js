@@ -7,22 +7,31 @@ class Index extends Component {
   state = {
     units: [
       {
-        uid: "3244ff730e03169f0c3e720",
-        mac: "5f4-123f-323f-32",
-        description: "windows 10 pc",
-        type: false
+        data: {
+          uid: "3244ff730e03169f0c3e720",
+          mac: "5f4-123f-323f-32",
+          description: "windows 10 pc",
+          type: false
+        },
+        el: undefined
       },
       {
-        uid: "5eb1581730e03167f0c3e921",
-        mac: "123-123f-53f-32",
-        description: "mac osX pc",
-        type: false
+        data: {
+          uid: "5eb1581730e03167f0c3e921",
+          mac: "123-123f-53f-32",
+          description: "mac osX pc",
+          type: false
+        },
+        el: undefined
       },
       {
-        uid: "32133730e03fsdf",
-        mac: "555-78f-53f-923",
-        description: "Android",
-        type: true
+        data: {
+          uid: "32133730e03fsdf",
+          mac: "555-78f-53f-923",
+          description: "Android",
+          type: true
+        },
+        el: undefined
       }
     ],
     holdingLocation: { x: 0, y: 0, index: null }
@@ -41,7 +50,7 @@ class Index extends Component {
       }
     }, t * 1000);
   };
-  curMousePos = undefined;
+  curMousePos = { x: 0, y: 0 };
   componentDidMount() {
     window.addEventListener("mouseup", ev => {
       this.isHolding = false;
@@ -54,7 +63,7 @@ class Index extends Component {
       }
     });
     var fpsInterval, now, then, elapsed;
-    fpsInterval = 1000 / 5;
+    fpsInterval = 1000 / 30;
     then = Date.now();
     const animate = () => {
       window.requestAnimationFrame(animate);
@@ -67,18 +76,26 @@ class Index extends Component {
     };
     animate();
   }
+  moveSpeed = 1;
   update = deltaTime => {
     if (this.shouldUpdate) {
       //   const oldMousePos = this.state.holdingLocation;
 
       const holdingLocation = this.state.holdingLocation;
       const newLocation = {
-        x: this.curMousePos.x,
-        y: this.curMousePos.y,
+        x: this.curMousePos.x * this.moveSpeed,
+        y: this.curMousePos.y * this.moveSpeed,
         uid: holdingLocation.uid
       };
       this.setState({ holdingLocation: newLocation });
     }
+  };
+  unitInit = (uid, el) => {
+    const newUnits = [...this.state.units];
+    const found = newUnits.find(unit => unit.data.uid === uid);
+    found.el = el;
+    this.setState({ units: newUnits });
+    console.log(uid, el);
   };
   render() {
     return (
@@ -89,15 +106,17 @@ class Index extends Component {
           <UnitContainer
             title="Active users"
             type={false}
-            units={this.state.units.filter(u => u.type === false)}
+            units={this.state.units.filter(u => u.data.type === false)}
             onUnitClick={this.onUnitClick}
+            onUnitInit={this.unitInit}
             holdingLocation={this.state.holdingLocation}
           />
           <UnitContainer
             title="Blocked users"
             type={true}
-            units={this.state.units.filter(u => u.type === true)}
+            units={this.state.units.filter(u => u.data.type === true)}
             onUnitClick={this.onUnitClick}
+            onUnitInit={this.unitInit}
             holdingLocation={this.state.holdingLocation}
           />
         </div>
