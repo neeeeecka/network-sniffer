@@ -39,7 +39,8 @@ class Index extends Component {
       y: 0,
       uid: null,
       anchor: { x: 0, y: 0 },
-      isAnim: false
+      isAnim: false,
+      isHolded: false
     },
     selectedUnit: { initialPos: { x: 0, y: 0 } },
     isHolding: false,
@@ -47,7 +48,7 @@ class Index extends Component {
   };
   onUnitClick = (uid, ev) => {
     this.setState({ isHolding: true });
-    const t = 0.2;
+    const t = 0.15;
     ev.persist();
     const timeout = setTimeout(() => {
       if (this.state.isHolding) {
@@ -69,7 +70,8 @@ class Index extends Component {
             rx: this.curMousePos.x - rect.left,
             ry: this.curMousePos.y - rect.top,
             w: unit.el.offsetWidth,
-            h: unit.el.offsetHeight
+            h: unit.el.offsetHeight,
+            isHolded: true
           },
           selectedUnit: unit,
           shouldUpdate: true
@@ -92,7 +94,8 @@ class Index extends Component {
             isAnim: true
           },
           isHolding: false,
-          shouldUpdate: false
+          shouldUpdate: false,
+          isHolded: false
         },
         () => {
           const t = setTimeout(() => {
@@ -110,7 +113,7 @@ class Index extends Component {
       }
     });
     var fpsInterval, now, then, elapsed;
-    fpsInterval = 1000 / 20;
+    fpsInterval = 1000 / 25;
     then = Date.now();
     const animate = () => {
       window.requestAnimationFrame(animate);
@@ -152,7 +155,8 @@ class Index extends Component {
         ry: holdingLocation.ry,
         w: holdingLocation.w,
         h: holdingLocation.h,
-        uid: holdingLocation.uid
+        uid: holdingLocation.uid,
+        isHolded: true
       };
       this.setState({ holdingLocation: newLocation });
     }
