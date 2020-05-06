@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-
 import UnitContainer from "./components/unitContainer";
 import Header from "./components/header";
+import Rectangle from "./Rectangle";
+import Vector2 from "./Vector2";
 
 class Index extends Component {
   state = {
@@ -57,24 +58,19 @@ class Index extends Component {
     const timeout = setTimeout(() => {
       if (this.state.isHolding) {
         const unit = this.state.units.find(unit => unit.data.uid === uid);
-        this.curMousePos = {
-          x: ev.clientX,
-          y: ev.clientY
-        };
-        const rect = unit.el.getBoundingClientRect();
+        // const bcr = unit.el.getBoundingClientRect();
+        this.curMousePos = new Vector2(ev.clientX, ev.clientY);
         this.lastMousePos = this.curMousePos;
 
         this.setState({
           holdingLocation: {
             x: 0,
             y: 0,
+            rect: new Rectangle(
+              new Vector2(0, 0),
+              new Vector2(unit.el.offsetWidth, unit.el.offsetHeight)
+            ),
             uid: uid,
-            ax: rect.left,
-            ay: rect.top,
-            rx: this.curMousePos.x - rect.left,
-            ry: this.curMousePos.y - rect.top,
-            w: unit.el.offsetWidth,
-            h: unit.el.offsetHeight,
             isHolded: true
           },
           selectedUnit: unit,
@@ -85,7 +81,7 @@ class Index extends Component {
       }
     }, t * 1000);
   };
-  curMousePos = { x: 0, y: 0 };
+  curMousePos = new Vector2(0, 0);
   componentDidMount() {
     window.addEventListener("mouseup", ev => {
       const holdingLocation = this.state.holdingLocation;
@@ -94,6 +90,7 @@ class Index extends Component {
           holdingLocation: {
             x: 0,
             y: 0,
+            rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
             uid: holdingLocation.uid,
             isAnim: true
           },
@@ -113,7 +110,8 @@ class Index extends Component {
     });
     window.addEventListener("mousemove", ev => {
       if (this.state.isHolding) {
-        this.curMousePos = { x: ev.clientX, y: ev.clientY };
+        this.curMousePos.x = ev.clientX;
+        this.curMousePos.y = ev.clientY;
       }
     });
     var fpsInterval, now, then, elapsed;
@@ -136,28 +134,14 @@ class Index extends Component {
   lastMousePos = { x: 0, y: 0 };
   update = deltaTime => {
     if (this.state.shouldUpdate) {
-      //   const oldMousePos = this.state.holdingLocation;
       const currentMousePos = this.curMousePos;
-
-      const movement = {
-        x: currentMousePos.x - this.lastMousePos.x,
-        y: currentMousePos.y - this.lastMousePos.y
-      };
-
-      this.lastMousePos = currentMousePos;
+      const movement = this.curMousePos.subtract(this.lastMousePos);
+      this.lastMousePos = currentMousePos.clone();
 
       const holdingLocation = this.state.holdingLocation;
       const newLocation = {
-        // x: this.curMousePos.x - holdingLocation.ax - holdingLocation.rx,
-        // y: this.curMousePos.y - holdingLocation.ay - holdingLocation.ry,
         x: holdingLocation.x + movement.x,
         y: holdingLocation.y + movement.y,
-        ax: holdingLocation.ax,
-        ay: holdingLocation.ay,
-        rx: holdingLocation.rx,
-        ry: holdingLocation.ry,
-        w: holdingLocation.w,
-        h: holdingLocation.h,
         uid: holdingLocation.uid,
         isHolded: true
       };

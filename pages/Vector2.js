@@ -15,4 +15,8 @@ class Vector2 {
   dot(vec2) {
     return this.x * vec2.x + this.y * vec2.y;
   }
+  clone() {
+    return new Vector2(this.x, this.y);
+  }
 }
+export default Vector2;
