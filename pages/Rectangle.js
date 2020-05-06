@@ -3,12 +3,20 @@ class Rectangle {
     this.xy = xy;
     this.wh = wh;
   }
-  intersects(rect1, rect2) {
+  intersectsPoint(point) {
     return (
-      rect1.xy.x >= rect2.xy.x &&
-      rect1.xy.x <= rect2.xy.x + rect2.wh.x &&
-      rect1.xy.y >= rect2.xy.y &&
-      rect1.xy.y <= rect2.xy.y + rect2.wh.y
+      point.x >= rect2.xy.x &&
+      point.x <= rect2.xy.x + rect2.wh.x &&
+      point.y >= rect2.xy.y &&
+      point.y <= rect2.xy.y + rect2.wh.y
+    );
+  }
+  intersects(rect2) {
+    return (
+      this.xy.x < rect2.xy.x + rect2.wh.x &&
+      this.xy.x + this.wh.x > rect2.xy.x &&
+      this.xy.y < rect2.xy.y + rect2.wh.y &&
+      this.xy.y + this.wh.y > rect2.xy.y
     );
   }
 }
