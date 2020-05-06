@@ -33,6 +33,11 @@ class Vector2 {
   compareTo(vec2) {
     return this.x === vec2.x && this.y === vec2.y;
   }
+  modify(x, y) {
+    this.x = x;
+    this.y = y;
+    return this;
+  }
   clone() {
     return new Vector2(this.x, this.y);
   }

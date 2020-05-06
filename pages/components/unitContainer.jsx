@@ -19,7 +19,8 @@ class Unit extends Component {
   render() {
     const t = this.props.type === false;
 
-    const xy = this.props.holdState.rect.xy;
+    const holdState = this.props.holdState;
+    const xy = holdState.rect.xy;
 
     const className =
       "relative shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
@@ -28,7 +29,7 @@ class Unit extends Component {
       (xy.isHolded ? " z-10" : " z-0");
     const d = this.props.data;
     let style = { transform: "tranaslate(0, 0)" };
-    if (xy.uid === d.uid) {
+    if (holdState.uid === d.uid) {
       style = {
         transform: `translate(${xy.x}px, ${xy.y}px)`
       };

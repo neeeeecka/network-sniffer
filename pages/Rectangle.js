@@ -22,9 +22,8 @@ class Rectangle {
     );
   }
   clone() {
-    console.log("clone");
     return new Rectangle(
-      new Vector2(this.x, this.y),
+      new Vector2(this.xy.x, this.xy.y),
       new Vector2(this.wh.x, this.wh.y)
     );
   }

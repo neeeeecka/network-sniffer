@@ -63,8 +63,6 @@ class Index extends Component {
 
         this.setState({
           holdingLocation: {
-            x: 0,
-            y: 0,
             rect: new Rectangle(
               new Vector2(0, 0),
               new Vector2(unit.el.offsetWidth, unit.el.offsetHeight)
@@ -111,8 +109,7 @@ class Index extends Component {
     });
     window.addEventListener("mousemove", ev => {
       if (this.state.isHolding) {
-        this.curMousePos.x = ev.clientX;
-        this.curMousePos.y = ev.clientY;
+        this.curMousePos.modify(ev.clientX, ev.clientY);
       }
     });
     var fpsInterval, now, then, elapsed;
@@ -141,6 +138,7 @@ class Index extends Component {
 
       const holdState = this.state.holdingLocation;
       const newRect = holdState.rect.clone();
+
       newRect.xy.addTo(movement);
 
       const newHoldState = {
