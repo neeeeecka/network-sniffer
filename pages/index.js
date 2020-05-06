@@ -100,7 +100,7 @@ class Index extends Component {
               holdingLocation: { x: 0, y: 0, uid: null, isAnim: false }
             });
             clearTimeout(t);
-          }, 2.5 * 1000);
+          }, 0.25 * 1000);
         }
       );
     });

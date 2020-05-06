@@ -11,6 +11,9 @@
 .transform-duration-15 {
   transition: transform 0.15s ease;
 }
+.transform-duration-25 {
+  transition: transform 0.25s ease;
+}
 
 .children-mb-1 {
   margin-bottom: 0.25rem;

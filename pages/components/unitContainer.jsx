@@ -18,11 +18,13 @@ class Unit extends Component {
   }
   render() {
     const t = this.props.type === false;
-    const className =
-      "shadow-md transform-duration-0 children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-700 select-none" +
-      (t ? " border-gray-700" : " border-orange-700");
-    const d = this.props.data;
     const xy = this.props.holdingLocation;
+
+    const className =
+      "shadow-md children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-700 select-none" +
+      (t ? " border-gray-700" : " border-orange-700") +
+      (xy.isAnim ? " transform-duration-25" : " transform-duration-0");
+    const d = this.props.data;
     let style = { transform: "tranaslate(0, 0)" };
     if (xy.uid === d.uid) {
       style = {
