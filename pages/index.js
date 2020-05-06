@@ -3,6 +3,7 @@ import UnitContainer from "./components/unitContainer";
 import Header from "./components/header";
 import Rectangle from "./Rectangle";
 import Vector2 from "./Vector2";
+import FrameHandler from "./FrameHandler";
 
 class Index extends Component {
   state = {
@@ -115,19 +116,7 @@ class Index extends Component {
         this.curMousePos.modify(ev.clientX, ev.clientY);
       }
     });
-    var fpsInterval, now, then, elapsed;
-    fpsInterval = 1000 / 30;
-    then = Date.now();
-    const animate = () => {
-      window.requestAnimationFrame(animate);
-      now = Date.now();
-      elapsed = now - then;
-      if (elapsed > fpsInterval) {
-        then = now - (elapsed % fpsInterval);
-        this.update(elapsed / 1000);
-      }
-    };
-    animate();
+    const frameHandler = new FrameHandler(30, this.update);
   }
   selectedUnit = { initialPos: { x: 0, y: 0 } };
   moveSpeed = 1;
@@ -135,9 +124,8 @@ class Index extends Component {
   lastMousePos = { x: 0, y: 0 };
   update = deltaTime => {
     if (this.state.shouldUpdate) {
-      const currentMousePos = this.curMousePos;
       const movement = this.curMousePos.subtract(this.lastMousePos);
-      this.lastMousePos = currentMousePos.clone();
+      this.lastMousePos = this.curMousePos.clone();
 
       const holdState = this.state.holdingLocation;
       const newRect = holdState.rect.clone();
@@ -151,10 +139,10 @@ class Index extends Component {
       };
 
       const containers = { true: false, false: false };
-      if (this.falseContainer.rect.intersectsPoint(currentMousePos)) {
+      if (this.falseContainer.rect.intersectsPoint(this.curMousePos)) {
         containers[false] = true;
       }
-      if (this.trueContainer.rect.intersectsPoint(currentMousePos)) {
+      if (this.trueContainer.rect.intersectsPoint(this.curMousePos)) {
         containers[true] = true;
       }
 
