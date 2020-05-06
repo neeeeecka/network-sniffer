@@ -37,8 +37,8 @@ class Index extends Component {
       }
     ],
     containers: {
-      true: null,
-      false: null
+      active: null,
+      blocked: null
     },
     holdingLocation: {
       rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
@@ -83,11 +83,20 @@ class Index extends Component {
   componentDidMount() {
     window.addEventListener("mouseup", ev => {
       const holdingLocation = this.state.holdingLocation;
-      const containers = { true: false, false: false };
+
+      const containers = this.state.containers;
+      let activeCont = undefined;
+      Object.keys(this.state.containers).forEach(key => {
+        if (this.state.containers[key]) {
+          activeCont = key;
+        }
+      });
+      console.log(activeCont);
+      const newContainers = { active: false, blocked: false };
 
       this.setState(
         {
-          containers: containers,
+          containers: newContainers,
           holdingLocation: {
             rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
             uid: holdingLocation.uid,
@@ -138,12 +147,12 @@ class Index extends Component {
         isHolded: true
       };
 
-      const containers = { true: false, false: false };
+      const containers = { active: false, blocked: false };
       if (this.falseContainer.rect.intersectsPoint(this.curMousePos)) {
-        containers[false] = true;
+        containers.active = true;
       }
       if (this.trueContainer.rect.intersectsPoint(this.curMousePos)) {
-        containers[true] = true;
+        containers.blocked = true;
       }
 
       this.setState({ holdingLocation: newHoldState, containers: containers });
