@@ -4,10 +4,15 @@ class Unit extends Component {
   render() {
     const t = this.props.type === false;
     const className =
-      "p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
+      "children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700");
     return (
-      <div className={className}>
+      <div
+        className={className}
+        onClick={() => {
+          this.props.onUnitClick(this.props.index, this.props.type);
+        }}
+      >
         <div className="flex pl-5 text-gray-200 capitalize font-medium">
           <span className="flex-1">Unique ID</span>
           <span className="flex-1">Mac</span>
@@ -33,19 +38,33 @@ class Unit extends Component {
   }
 }
 
-class Container extends Component {
+class UnitContainer extends Component {
+  getUnits = () => {
+    const units = [];
+    this.props.units.forEach((unit, i) => {
+      units.push(
+        <Unit
+          index={i}
+          type={this.props.type}
+          onUnitClick={this.props.onUnitClick}
+          data={unit}
+        />
+      );
+    });
+    return units;
+  };
   render() {
     return (
       <div className="w-1/2 m-1">
         <span className="w-full text-gray-100 font-medium text-lg px-1 mb-1 inline-block">
           {this.props.title}
         </span>
-        <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-5">
-          <Unit type={this.props.type} />
+        <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
+          {this.getUnits()}
         </div>
       </div>
     );
   }
 }
 
-export default Container;
+export default UnitContainer;
