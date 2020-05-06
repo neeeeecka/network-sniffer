@@ -28,23 +28,58 @@ class Index extends Component {
     holdingLocation: { x: 0, y: 0, index: null }
   };
   isHolding = false;
+  shouldUpdate = false;
   onUnitClick = uid => {
     this.isHolding = true;
     const t = 0.5;
     const timeout = setTimeout(() => {
       if (this.isHolding) {
+        this.shouldUpdate = true;
         this.setState({ holdingLocation: { x: 0, y: 0, uid: uid } });
       } else {
         clearTimeout(timeout);
       }
     }, t * 1000);
   };
+  curMousePos = undefined;
   componentDidMount() {
     window.addEventListener("mouseup", ev => {
       this.isHolding = false;
+      this.shouldUpdate = false;
       this.setState({ holdingLocation: { x: 0, y: 0, uid: null } });
     });
+    window.addEventListener("mousemove", ev => {
+      if (this.isHolding) {
+        this.curMousePos = { x: ev.clientX, y: ev.clientY };
+      }
+    });
+    var fpsInterval, now, then, elapsed;
+    fpsInterval = 1000 / 5;
+    then = Date.now();
+    const animate = () => {
+      window.requestAnimationFrame(animate);
+      now = Date.now();
+      elapsed = now - then;
+      if (elapsed > fpsInterval) {
+        then = now - (elapsed % fpsInterval);
+        this.update(elapsed / 1000);
+      }
+    };
+    animate();
   }
+  update = deltaTime => {
+    if (this.shouldUpdate) {
+      //   const oldMousePos = this.state.holdingLocation;
+
+      const holdingLocation = this.state.holdingLocation;
+      const newLocation = {
+        x: this.curMousePos.x,
+        y: this.curMousePos.y,
+        uid: holdingLocation.uid
+      };
+      this.setState({ holdingLocation: newLocation });
+    }
+  };
   render() {
     return (
       <div className="bg-gray-800 h-screen">

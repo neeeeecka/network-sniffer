@@ -1,19 +1,41 @@
 import React, { Component } from "react";
 
 class Unit extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    const nextHolding = nextProps.holdingLocation;
+    const curHolding = this.props.holdingLocation;
+
+    const shouldAffect = nextHolding.uid === this.props.data.uid;
+    const isChanged =
+      nextHolding.x !== curHolding.x || nextHolding.y !== curHolding.y;
+
+    const shouldUpdate = shouldAffect && isChanged;
+
+    return (
+      JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
+      shouldUpdate
+    );
+  }
   render() {
     const t = this.props.type === false;
     const className =
       "children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700");
     const d = this.props.data;
-    console.log(this.props.holdingLocation.uid, d.uid);
+    const xy = this.props.holdingLocation;
+    let style = { transform: "none" };
+    if (xy.uid === d.uid) {
+      style = {
+        transform: `translate(${xy.x}px, ${xy.y}px)`
+      };
+    }
     return (
       <div
         className={className}
         onMouseDown={() => {
           this.props.onUnitClick(d.uid);
         }}
+        style={style}
       >
         <div className="flex pl-5 text-gray-200 capitalize font-medium">
           <span className="flex-1">Unique ID</span>
