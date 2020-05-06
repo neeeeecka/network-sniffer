@@ -37,7 +37,9 @@ class Unit extends Component {
         }}
         style={style}
         ref={el => {
-          this.props.onUnitInit(d.uid, el);
+          if (!this.props.element) {
+            this.props.onUnitInit(d.uid, el);
+          }
         }}
       >
         <div className="flex pl-5 text-gray-200 capitalize font-medium">
@@ -71,7 +73,7 @@ class UnitContainer extends Component {
     this.props.units.forEach((unit, i) => {
       units.push(
         <Unit
-          key={unit.uid}
+          key={unit.data.uid}
           index={i}
           type={this.props.type}
           onUnitClick={this.props.onUnitClick}
