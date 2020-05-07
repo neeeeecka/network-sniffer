@@ -68,7 +68,7 @@ class Index extends Component {
           new Vector2(cRect.width, cRect.height)
         );
         if (!this.debugId) {
-          this.debugId = newRect.debug("rgba(255,103,27, 0.7)");
+          // this.debugId = newRect.debug("rgba(255,103,27, 0.7)");
         }
         const newHoldingState = { ...this.state.holdingLocation };
         newHoldingState.rect = newRect;

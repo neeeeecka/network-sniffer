@@ -88,10 +88,19 @@ class Expander extends Component {
       newRect.xy = new Vector2(cRect.left, cRect.top);
       newRect.wh = new Vector2(cRect.width, 15);
       this.setState({ rect: newRect });
-      newRect.debug("rgba(27,182,255, 0.7)");
+
+      if (!this.debugId) {
+        this.debugId = newRect.debug("rgba(27,182,255, 0.7)");
+      }
     }
   }
+  componentWillUnmount() {
+    this.state.rect.debugEnd(this.debugId);
+  }
   render() {
+    if (typeof window !== "undefined") {
+      this.state.rect.debugAt(this.debugId);
+    }
     const shouldExpand = this.props.holdStateRect.intersects(this.state.rect);
     // const shouldExpand = this.state.rect.intersectsPoint(
     //   this.props.curMousePos

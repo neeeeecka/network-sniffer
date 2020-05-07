@@ -43,6 +43,12 @@ class Rectangle {
       rectDomEl.style.transform = `translate(${this.xy.x}px, ${this.xy.y}px)`;
     }
   }
+  debugEnd(debugId) {
+    const rectDomEl = document.getElementById(debugId);
+    console.log(rectDomEl);
+
+    // rectDomEl.remove();
+  }
   debug(color) {
     const debugId = "rectDebug-" + makeid(5);
     const rectEl = (
