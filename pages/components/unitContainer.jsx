@@ -23,7 +23,7 @@ class Unit extends Component {
     const t = this.props.data.type === "active";
 
     const holdState = this.props.holdState;
-    const xy = holdState.rect.xy.subtract(holdState.startOffset);
+    const xy = holdState.rect.xy;
 
     const className =
       "animate-height shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +

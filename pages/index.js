@@ -64,10 +64,9 @@ class Index extends Component {
         this.lastMousePos = this.curMousePos;
 
         const newRect = new Rectangle(
-          new Vector2(0, 0),
+          new Vector2(cRect.left, cRect.top),
           new Vector2(cRect.width, cRect.height)
         );
-        console.log(newRect);
         if (!this.debugId) {
           this.debugId = newRect.debug("rgba(255,103,27, 0.7)");
         }
