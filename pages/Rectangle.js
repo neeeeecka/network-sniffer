@@ -51,7 +51,16 @@ class Rectangle {
     const rectDomEl = document.getElementById(debugId);
     // el.style.width = this.wh.x;
     // el.style.height = this.wh.y;
-    const frameHandler = new FrameHandler(15, deltaTime => {});
+    const update = deltaTime => {
+      rectDomEl.style.transform = `translate(${this.xy.x}px, ${this.xy.y}px)`;
+    };
+    if (!window.debugFrameHandler) {
+      const frameHandler = new FrameHandler(15, update, debugId);
+      window.debugFrameHandler = frameHandler;
+    } else {
+      window.debugFrameHandler.addUpdate(update, debugId);
+    }
+    console.log(window.debugFrameHandler);
   }
 }
 function makeid(length) {
