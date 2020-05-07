@@ -29,7 +29,7 @@ class Unit extends Component {
       "animate-height shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
       (t ? " border-gray-700" : " border-orange-700") +
       (holdState.isAnim ? " transform-duration-25" : " transform-duration-0") +
-      (holdState.isHolded ? " z-10 absolute top-0" : " z-0 relative");
+      (holdState.isHolded ? " z-10 absolute top-0 left-0" : " z-0 relative");
     const d = this.props.data;
     let style = { transform: "tranaslate(0, 0)" };
     if (holdState.uid === d.uid) {
@@ -152,7 +152,7 @@ class UnitContainer extends Component {
         <span className="w-full text-gray-100 font-medium text-lg px-1 mb-1 inline-block">
           {this.props.title}
         </span>
-        <div className="relative bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
+        <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
           <Expander
             uid={"first"}
             {...this.props.holdState}
