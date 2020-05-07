@@ -92,6 +92,9 @@ class Expander extends Component {
   }
   render() {
     const shouldExpand = this.props.holdStateRect.intersects(this.state.rect);
+    // const shouldExpand = this.state.rect.intersectsPoint(
+    //   this.props.curMousePos
+    // );
     // const shouldExpand = this.props.holdStateRect.intersectsWithOffset(
     //   this.state.rect,
     //   this.props.startOffset

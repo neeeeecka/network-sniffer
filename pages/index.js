@@ -43,6 +43,7 @@ class Index extends Component {
     holdingLocation: {
       rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
       startOffset: new Vector2(0, 0),
+      curMousePos: new Vector2(0, 0),
       uid: null,
       isAnim: false,
       isHolded: false
@@ -66,17 +67,17 @@ class Index extends Component {
           new Vector2(0, 0),
           new Vector2(unit.el.offsetWidth, unit.el.offsetHeight)
         );
-
         if (!this.debugId) {
           this.debugId = newRect.debug("rgba(255,103,27, 0.7)");
         }
+        const newHoldingState = { ...this.state.holdingLocation };
+        newHoldingState.rect = newRect;
+        newHoldingState.startOffset = new Vector2(cRect.left, cRect.top);
+        newHoldingState.uid = uid;
+        newHoldingState.isHolded = true;
+
         this.setState({
-          holdingLocation: {
-            rect: newRect,
-            startOffset: new Vector2(cRect.left, cRect.top),
-            uid: uid,
-            isHolded: true
-          },
+          holdingLocation: newHoldingState,
           selectedUnit: unit,
           shouldUpdate: true
         });
@@ -109,30 +110,30 @@ class Index extends Component {
         this.setState({ units: newUnits });
       }
       const newContainers = { active: false, blocked: false };
-
+      let newHoldingState = { ...this.state.holdingLocation };
+      newHoldingState.rect = new Rectangle(
+        new Vector2(0, 0),
+        new Vector2(0, 0)
+      );
+      newHoldingState.isAnim = true;
+      newHoldingState.isHolded = false;
+      newHoldingState.startOffset = new Vector2(0, 0);
+      newHoldingState.cursorPos = new Vector2(0, 0);
       this.setState(
         {
           containers: newContainers,
-          holdingLocation: {
-            rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
-            uid: holdState.uid,
-            isAnim: true,
-            startOffset: new Vector2(0, 0)
-          },
+          holdingLocation: newHoldingState,
           isHolding: false,
           shouldUpdate: false,
-          isHolded: false,
           selectedUnit: undefined
         },
         () => {
           const t = setTimeout(() => {
+            newHoldingState.uid = null;
+            newHoldingState.isAnim = false;
+
             this.setState({
-              holdingLocation: {
-                rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
-                startOffset: new Vector2(0, 0),
-                uid: null,
-                isAnim: false
-              }
+              holdingLocation: newHoldingState
             });
             clearTimeout(t);
           }, 0.25 * 1000);
@@ -165,6 +166,7 @@ class Index extends Component {
       const newHoldState = {
         rect: newRect,
         startOffset: holdState.startOffset,
+        cursorPos: this.curMousePos,
         uid: holdState.uid,
         isHolded: true
       };
