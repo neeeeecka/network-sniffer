@@ -88,6 +88,9 @@ class Expander extends Component {
     rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0))
   };
   expander = {};
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
   componentDidMount() {
     if (this.expander[this.props.uid]) {
       const cRect = this.expander[this.props.uid].getBoundingClientRect();
@@ -136,25 +139,26 @@ class UnitContainer extends Component {
     const units = [];
     this.props.units.forEach((unit, i) => {
       units.push(
-        <React.Fragment key={unit.data.uid}>
-          <Unit
-            key={"unit" + unit.data.uid}
-            index={i}
-            onUnitClick={this.props.onUnitClick}
-            onUnitInit={this.props.onUnitInit}
-            data={unit.data}
-            element={unit.el}
-            holdState={this.props.holdState}
-          />
-          <Expander
-            // key={i}
-            {...this.props.data}
-            {...this.props.holdState}
-            holdStateRect={this.props.holdState.rect}
-          />
-        </React.Fragment>
+        <Unit
+          key={unit.data.uid}
+          index={i}
+          onUnitClick={this.props.onUnitClick}
+          onUnitInit={this.props.onUnitInit}
+          data={unit.data}
+          element={unit.el}
+          holdState={this.props.holdState}
+        />
+      );
+      units.push(
+        <Expander
+          key={"ex" + unit.data.uid}
+          {...this.props.data}
+          {...this.props.holdState}
+          holdStateRect={this.props.holdState.rect}
+        />
       );
     });
+
     return units;
   };
 
