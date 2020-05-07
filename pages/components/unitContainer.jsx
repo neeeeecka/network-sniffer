@@ -128,11 +128,13 @@ class UnitContainer extends Component {
       units.push(
         <React.Fragment key={unit.data.uid}>
           <Expander
+            key={"exp" + unit.data.uid}
             {...unit.data}
             {...this.props.holdState}
             holdStateRect={this.props.holdState.rect}
           />
           <Unit
+            key={"unit" + unit.data.uid}
             index={i}
             onUnitClick={this.props.onUnitClick}
             onUnitInit={this.props.onUnitInit}
@@ -163,13 +165,13 @@ class UnitContainer extends Component {
         </span>
         <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
           {units}
-          {units.length != 1 ? (
+          {/* {units.length != 1 ? (
             <Expander
               uid={"first"}
               {...this.props.holdState}
               holdStateRect={this.props.holdState.rect}
             />
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     );

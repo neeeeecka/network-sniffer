@@ -34,6 +34,15 @@ class Index extends Component {
           type: "blocked"
         },
         el: undefined
+      },
+      {
+        data: {
+          uid: "321355f",
+          mac: "555-78f-53f-923",
+          description: "Bundroid",
+          type: "blocked"
+        },
+        el: undefined
       }
     ],
     containers: {

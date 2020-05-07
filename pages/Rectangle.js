@@ -47,7 +47,7 @@ class Rectangle {
     const rectDomEl = document.getElementById(debugId);
     console.log(rectDomEl);
 
-    // rectDomEl.remove();
+    rectDomEl.remove();
   }
   debug(color) {
     const debugId = "rectDebug-" + makeid(5);
