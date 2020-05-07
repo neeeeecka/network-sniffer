@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Rectangle from "../Rectangle";
+import Vector2 from "../Vector2";
 
 class Unit extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -72,25 +74,56 @@ class Unit extends Component {
   }
 }
 
+class Expander extends Component {
+  state = {
+    rect: new Rectangle(new Vector2(0, 0), new Vector2(800, 15))
+  };
+  expander = {};
+  componentDidMount() {
+    if (this.expander[this.props.uid]) {
+      const cRect = this.expander[this.props.uid].getBoundingClientRect();
+      const newRect = this.state.rect.clone();
+      newRect.xy = new Vector2(cRect.left, cRect.top);
+      this.setState({ rect: newRect });
+    }
+  }
+  render() {
+    const shouldExpand = this.props.holdStateRect.intersects(this.state.rect);
+    return (
+      <span
+        className={"block animate-height " + (shouldExpand ? "h-16" : "h-0")}
+        ref={el => {
+          this.expander[this.props.uid] = el;
+        }}
+      />
+    );
+  }
+}
+
 class UnitContainer extends Component {
   getUnits = () => {
     const units = [];
     this.props.units.forEach((unit, i) => {
       units.push(
-        <Unit
-          key={unit.data.uid}
-          index={i}
-          onUnitClick={this.props.onUnitClick}
-          onUnitInit={this.props.onUnitInit}
-          data={unit.data}
-          element={unit.el}
-          holdState={this.props.holdState}
-        />
+        <React.Fragment key={unit.data.uid}>
+          <Unit
+            index={i}
+            onUnitClick={this.props.onUnitClick}
+            onUnitInit={this.props.onUnitInit}
+            data={unit.data}
+            element={unit.el}
+            holdState={this.props.holdState}
+          />
+          <Expander {...unit.data} holdStateRect={this.props.holdState.rect} />
+        </React.Fragment>
       );
     });
     return units;
   };
+
   render() {
+    const units = this.getUnits();
+
     return (
       <div
         className="w-1/2 m-1"
@@ -104,12 +137,8 @@ class UnitContainer extends Component {
           {this.props.title}
         </span>
         <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
-          {this.getUnits()}
-          <span
-            className={
-              "block animate-height " + (this.props.expand ? "h-16" : "h-0")
-            }
-          />
+          <Expander uid={"first"} holdStateRect={this.props.holdState.rect} />
+          {units}
         </div>
       </div>
     );

@@ -82,7 +82,7 @@ class Index extends Component {
   curMousePos = new Vector2(0, 0);
   componentDidMount() {
     window.addEventListener("mouseup", ev => {
-      const holdingLocation = this.state.holdingLocation;
+      const holdState = this.state.holdingLocation;
 
       if (this.state.isHolding && this.state.selectedUnit) {
         const containers = this.state.containers;
@@ -94,7 +94,7 @@ class Index extends Component {
         });
         const newUnits = [...this.state.units];
         const selectedUnit = newUnits.find(unit => {
-          return unit.data.uid === this.state.holdingLocation.uid;
+          return unit.data.uid === holdState.uid;
         });
         selectedUnit.data.type =
           activeCont !== undefined ? activeCont : selectedUnit.data.type;
@@ -109,7 +109,7 @@ class Index extends Component {
           containers: newContainers,
           holdingLocation: {
             rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
-            uid: holdingLocation.uid,
+            uid: holdState.uid,
             isAnim: true
           },
           isHolding: false,
