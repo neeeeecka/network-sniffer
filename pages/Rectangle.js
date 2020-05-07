@@ -39,7 +39,9 @@ class Rectangle {
   }
   debugAt(debugId) {
     const rectDomEl = document.getElementById(debugId);
-    rectDomEl.style.transform = `translate(${this.xy.x}px, ${this.xy.y}px)`;
+    if (rectDomEl) {
+      rectDomEl.style.transform = `translate(${this.xy.x}px, ${this.xy.y}px)`;
+    }
   }
   debug(color) {
     const debugId = "rectDebug-" + makeid(5);

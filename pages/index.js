@@ -114,30 +114,29 @@ class Index extends Component {
         this.setState({ units: newUnits });
       }
       const newContainers = { active: false, blocked: false };
-      let newHoldingState = { ...this.state.holdingLocation };
-      newHoldingState.rect = new Rectangle(
-        new Vector2(0, 0),
-        new Vector2(0, 0)
-      );
-      newHoldingState.isAnim = true;
-      newHoldingState.isHolded = false;
-      newHoldingState.startOffset = new Vector2(0, 0);
-      newHoldingState.cursorPos = new Vector2(0, 0);
+      let newHoldState = { ...this.state.holdingLocation };
+      newHoldState.rect = new Rectangle(new Vector2(0, 0), new Vector2(0, 0));
+      newHoldState.isAnim = true;
+      newHoldState.isHolded = false;
+      newHoldState.startOffset = new Vector2(0, 0);
+      newHoldState.cursorPos = new Vector2(0, 0);
+      // newHoldState.rect.debugAt(this.debugId);
+
       this.setState(
         {
           containers: newContainers,
-          holdingLocation: newHoldingState,
+          holdingLocation: newHoldState,
           isHolding: false,
           shouldUpdate: false,
           selectedUnit: undefined
         },
         () => {
           const t = setTimeout(() => {
-            newHoldingState.uid = null;
-            newHoldingState.isAnim = false;
+            newHoldState.uid = null;
+            newHoldState.isAnim = false;
 
             this.setState({
-              holdingLocation: newHoldingState
+              holdingLocation: newHoldState
             });
             clearTimeout(t);
           }, 0.25 * 1000);

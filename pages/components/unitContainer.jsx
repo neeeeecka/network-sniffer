@@ -78,7 +78,7 @@ class Unit extends Component {
 
 class Expander extends Component {
   state = {
-    rect: new Rectangle(new Vector2(0, 0), new Vector2(650, 1))
+    rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0))
   };
   expander = {};
   componentDidMount() {
@@ -86,7 +86,7 @@ class Expander extends Component {
       const cRect = this.expander[this.props.uid].getBoundingClientRect();
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
-      newRect.wh = new Vector2(cRect.width, newRect.wh.y);
+      newRect.wh = new Vector2(cRect.width, 15);
       this.setState({ rect: newRect });
       newRect.debug("rgba(27,182,255, 0.7)");
     }
@@ -118,6 +118,11 @@ class UnitContainer extends Component {
     this.props.units.forEach((unit, i) => {
       units.push(
         <React.Fragment key={unit.data.uid}>
+          <Expander
+            {...unit.data}
+            {...this.props.holdState}
+            holdStateRect={this.props.holdState.rect}
+          />
           <Unit
             index={i}
             onUnitClick={this.props.onUnitClick}
@@ -125,11 +130,6 @@ class UnitContainer extends Component {
             data={unit.data}
             element={unit.el}
             holdState={this.props.holdState}
-          />
-          <Expander
-            {...unit.data}
-            {...this.props.holdState}
-            holdStateRect={this.props.holdState.rect}
           />
         </React.Fragment>
       );
@@ -153,12 +153,14 @@ class UnitContainer extends Component {
           {this.props.title}
         </span>
         <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
-          <Expander
-            uid={"first"}
-            {...this.props.holdState}
-            holdStateRect={this.props.holdState.rect}
-          />
           {units}
+          {units.length != 1 ? (
+            <Expander
+              uid={"first"}
+              {...this.props.holdState}
+              holdStateRect={this.props.holdState.rect}
+            />
+          ) : null}
         </div>
       </div>
     );
