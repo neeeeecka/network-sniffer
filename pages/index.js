@@ -65,8 +65,9 @@ class Index extends Component {
 
         const newRect = new Rectangle(
           new Vector2(0, 0),
-          new Vector2(unit.el.offsetWidth, unit.el.offsetHeight)
+          new Vector2(cRect.width, cRect.height)
         );
+        console.log(newRect);
         if (!this.debugId) {
           this.debugId = newRect.debug("rgba(255,103,27, 0.7)");
         }
@@ -103,8 +104,12 @@ class Index extends Component {
         const selectedUnit = newUnits.find(unit => {
           return unit.data.uid === holdState.uid;
         });
-        selectedUnit.data.type =
-          activeCont !== undefined ? activeCont : selectedUnit.data.type;
+
+        if (activeCont) {
+          selectedUnit.data.type = activeCont;
+          selectedUnit.el = null;
+        }
+
         console.log(selectedUnit.data.type);
 
         this.setState({ units: newUnits });
@@ -186,11 +191,10 @@ class Index extends Component {
   };
 
   unitInit = (uid, el) => {
+    console.log("Re-inited");
     const newUnits = [...this.state.units];
     const found = newUnits.find(unit => unit.data.uid === uid);
     found.el = el;
-    const rect = el.getBoundingClientRect();
-    found.initialPos = { x: rect.left, y: rect.top };
     this.setState({ units: newUnits });
   };
   falseContainer = null;

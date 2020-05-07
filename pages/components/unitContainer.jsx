@@ -15,7 +15,8 @@ class Unit extends Component {
 
     return (
       JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
-      shouldUpdate
+      shouldUpdate ||
+      nextProps.element !== this.props.element
     );
   }
   render() {
