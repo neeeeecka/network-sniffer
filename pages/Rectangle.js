@@ -29,8 +29,11 @@ class Rectangle {
       new Vector2(this.wh.x, this.wh.y)
     );
   }
+  debugAt(debugId) {
+    const rectDomEl = document.getElementById(debugId);
+    rectDomEl.style.transform = `translate(${this.xy.x}px, ${this.xy.y}px)`;
+  }
   debug(color) {
-    console.log(document);
     const debugId = "rectDebug-" + makeid(5);
     const rectEl = (
       <div
@@ -51,16 +54,18 @@ class Rectangle {
     const rectDomEl = document.getElementById(debugId);
     // el.style.width = this.wh.x;
     // el.style.height = this.wh.y;
+
+    return debugId;
     const update = deltaTime => {
       rectDomEl.style.transform = `translate(${this.xy.x}px, ${this.xy.y}px)`;
     };
     if (!window.debugFrameHandler) {
       const frameHandler = new FrameHandler(15, update, debugId);
       window.debugFrameHandler = frameHandler;
+      console.log(window.debugFrameHandler);
     } else {
       window.debugFrameHandler.addUpdate(update, debugId);
     }
-    console.log(window.debugFrameHandler);
   }
 }
 function makeid(length) {

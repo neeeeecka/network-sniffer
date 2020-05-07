@@ -142,6 +142,7 @@ class Index extends Component {
   moveSpeed = 1;
 
   lastMousePos = { x: 0, y: 0 };
+  debugId = null;
   update = deltaTime => {
     if (this.state.shouldUpdate) {
       const movement = this.curMousePos.subtract(this.lastMousePos);
@@ -164,6 +165,12 @@ class Index extends Component {
       }
       if (this.trueContainer.rect.intersectsPoint(this.curMousePos)) {
         containers.blocked = true;
+      }
+
+      if (!this.debugId) {
+        this.debugId = newHoldState.rect.debug("rgba(255,103,27, 0.7)");
+      } else {
+        newHoldState.rect.debugAt(this.debugId);
       }
 
       this.setState({ holdingLocation: newHoldState, containers: containers });
