@@ -62,12 +62,17 @@ class Index extends Component {
         this.curMousePos = new Vector2(ev.clientX, ev.clientY);
         this.lastMousePos = this.curMousePos;
 
+        const newRect = new Rectangle(
+          new Vector2(0, 0),
+          new Vector2(unit.el.offsetWidth, unit.el.offsetHeight)
+        );
+
+        if (!this.debugId) {
+          this.debugId = newRect.debug("rgba(255,103,27, 0.7)");
+        }
         this.setState({
           holdingLocation: {
-            rect: new Rectangle(
-              new Vector2(0, 0),
-              new Vector2(unit.el.offsetWidth, unit.el.offsetHeight)
-            ),
+            rect: newRect,
             startOffset: new Vector2(cRect.left, cRect.top),
             uid: uid,
             isHolded: true
@@ -111,9 +116,9 @@ class Index extends Component {
           holdingLocation: {
             rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
             uid: holdState.uid,
-            isAnim: true
+            isAnim: true,
+            startOffset: new Vector2(0, 0)
           },
-          startOffset: new Vector2(0, 0),
           isHolding: false,
           shouldUpdate: false,
           isHolded: false,
@@ -124,6 +129,7 @@ class Index extends Component {
             this.setState({
               holdingLocation: {
                 rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
+                startOffset: new Vector2(0, 0),
                 uid: null,
                 isAnim: false
               }
@@ -171,11 +177,7 @@ class Index extends Component {
         containers.blocked = true;
       }
 
-      if (!this.debugId) {
-        this.debugId = newHoldState.rect.debug("rgba(255,103,27, 0.7)");
-      } else {
-        newHoldState.rect.debugAt(this.debugId);
-      }
+      newHoldState.rect.debugAt(this.debugId);
 
       this.setState({ holdingLocation: newHoldState, containers: containers });
     }
