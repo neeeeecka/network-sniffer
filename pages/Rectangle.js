@@ -1,5 +1,6 @@
 import Vector2 from "./Vector2";
 import ReactDOMServer from "react-dom/server";
+import FrameHandler from "./FrameHandler";
 
 class Rectangle {
   constructor(xy, wh) {
@@ -30,6 +31,7 @@ class Rectangle {
   }
   debug(color) {
     console.log(document);
+    const debugId = "rectDebug-" + makeid(5);
     const rectEl = (
       <div
         style={{
@@ -41,12 +43,25 @@ class Rectangle {
           position: "absolute",
           zIndex: 12
         }}
+        id={debugId}
       />
     );
     const debugEl = document.getElementById("rectDebugger");
     debugEl.innerHTML += ReactDOMServer.renderToString(rectEl);
+    const rectDomEl = document.getElementById(debugId);
     // el.style.width = this.wh.x;
     // el.style.height = this.wh.y;
+    const frameHandler = new FrameHandler(15, deltaTime => {});
   }
+}
+function makeid(length) {
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 export default Rectangle;

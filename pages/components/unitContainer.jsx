@@ -85,7 +85,7 @@ class Expander extends Component {
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
       this.setState({ rect: newRect });
-      newRect.debug("rgba(255,85,27, 0.7)");
+      newRect.debug("rgba(27,182,255, 0.7)");
     }
   }
   render() {
