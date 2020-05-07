@@ -94,6 +94,9 @@ class Expander extends Component {
       }
     }
   }
+  componentDidUpdate() {
+    this.state.rect.debugAt(this.debugId);
+  }
   componentWillUnmount() {
     this.state.rect.debugEnd(this.debugId);
   }
