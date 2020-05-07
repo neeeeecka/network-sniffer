@@ -15,6 +15,14 @@ class Rectangle {
       point.y <= this.xy.y + this.wh.y
     );
   }
+  intersectsWithOffset(rect2, offset) {
+    return (
+      this.xy.x + offset.x < rect2.xy.x + rect2.wh.x &&
+      this.xy.x + offset.x + this.wh.x > rect2.xy.x &&
+      this.xy.y + offset.y < rect2.xy.y + rect2.wh.y &&
+      this.xy.y + offset.y + this.wh.y > rect2.xy.y
+    );
+  }
   intersects(rect2) {
     return (
       this.xy.x < rect2.xy.x + rect2.wh.x &&

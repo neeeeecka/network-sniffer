@@ -76,7 +76,7 @@ class Unit extends Component {
 
 class Expander extends Component {
   state = {
-    rect: new Rectangle(new Vector2(0, 0), new Vector2(650, 20))
+    rect: new Rectangle(new Vector2(0, 0), new Vector2(650, 1))
   };
   expander = {};
   componentDidMount() {
@@ -84,12 +84,18 @@ class Expander extends Component {
       const cRect = this.expander[this.props.uid].getBoundingClientRect();
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
+      newRect.wh = new Vector2(cRect.width, newRect.wh.y);
       this.setState({ rect: newRect });
       newRect.debug("rgba(27,182,255, 0.7)");
     }
   }
   render() {
-    const shouldExpand = this.props.holdStateRect.intersects(this.state.rect);
+    // const shouldExpand = this.props.holdStateRect.intersects(this.state.rect);
+    const shouldExpand = this.props.holdStateRect.intersectsWithOffset(
+      this.state.rect,
+      this.props.startOffset
+    );
+
     return (
       <span
         className={"block animate-height " + (shouldExpand ? "h-16" : "h-0")}
@@ -115,7 +121,11 @@ class UnitContainer extends Component {
             element={unit.el}
             holdState={this.props.holdState}
           />
-          <Expander {...unit.data} holdStateRect={this.props.holdState.rect} />
+          <Expander
+            {...unit.data}
+            {...this.props.holdState}
+            holdStateRect={this.props.holdState.rect}
+          />
         </React.Fragment>
       );
     });
@@ -138,7 +148,11 @@ class UnitContainer extends Component {
           {this.props.title}
         </span>
         <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
-          <Expander uid={"first"} holdStateRect={this.props.holdState.rect} />
+          <Expander
+            uid={"first"}
+            {...this.props.holdState}
+            holdStateRect={this.props.holdState.rect}
+          />
           {units}
         </div>
       </div>

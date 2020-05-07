@@ -42,8 +42,8 @@ class Index extends Component {
     },
     holdingLocation: {
       rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
+      startOffset: new Vector2(0, 0),
       uid: null,
-      anchor: { x: 0, y: 0 },
       isAnim: false,
       isHolded: false
     },
@@ -58,7 +58,7 @@ class Index extends Component {
     const timeout = setTimeout(() => {
       if (this.state.isHolding) {
         const unit = this.state.units.find(unit => unit.data.uid === uid);
-        // const bcr = unit.el.getBoundingClientRect();
+        const cRect = unit.el.getBoundingClientRect();
         this.curMousePos = new Vector2(ev.clientX, ev.clientY);
         this.lastMousePos = this.curMousePos;
 
@@ -68,6 +68,7 @@ class Index extends Component {
               new Vector2(0, 0),
               new Vector2(unit.el.offsetWidth, unit.el.offsetHeight)
             ),
+            startOffset: new Vector2(cRect.left, cRect.top),
             uid: uid,
             isHolded: true
           },
@@ -112,6 +113,7 @@ class Index extends Component {
             uid: holdState.uid,
             isAnim: true
           },
+          startOffset: new Vector2(0, 0),
           isHolding: false,
           shouldUpdate: false,
           isHolded: false,
@@ -152,9 +154,11 @@ class Index extends Component {
       const newRect = holdState.rect.clone();
 
       newRect.xy.addTo(movement);
+      newRect.collisionOffset = holdState.startOffset;
 
       const newHoldState = {
         rect: newRect,
+        startOffset: holdState.startOffset,
         uid: holdState.uid,
         isHolded: true
       };
@@ -207,7 +211,15 @@ class Index extends Component {
   render() {
     return (
       <div className="bg-gray-800 h-screen  overflow-hidden">
-        <div id="rectDebugger" />
+        <div
+          id="rectDebugger"
+          style={{
+            overflow: "hidden",
+            width: "100%",
+            height: "100%",
+            position: "absolute"
+          }}
+        />
         <Header />
         <div className="flex p-2">
           <UnitContainer
