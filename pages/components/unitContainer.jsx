@@ -76,7 +76,7 @@ class Unit extends Component {
 
 class Expander extends Component {
   state = {
-    rect: new Rectangle(new Vector2(0, 0), new Vector2(800, 15))
+    rect: new Rectangle(new Vector2(0, 0), new Vector2(650, 20))
   };
   expander = {};
   componentDidMount() {
@@ -85,7 +85,7 @@ class Expander extends Component {
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
       this.setState({ rect: newRect });
-      newRect.debug("#ffaa00");
+      newRect.debug("rgba(255,85,27, 0.7)");
     }
   }
   render() {
