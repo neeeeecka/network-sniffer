@@ -1,4 +1,5 @@
 import Vector2 from "./Vector2";
+import ReactDOMServer from "react-dom/server";
 
 class Rectangle {
   constructor(xy, wh) {
@@ -26,6 +27,26 @@ class Rectangle {
       new Vector2(this.xy.x, this.xy.y),
       new Vector2(this.wh.x, this.wh.y)
     );
+  }
+  debug(color) {
+    console.log(document);
+    const rectEl = (
+      <div
+        style={{
+          background: color,
+          width: this.wh.x,
+          height: this.wh.y,
+          transform: `translate(${this.xy.x}px, ${this.xy.y}px)`,
+          pointerEvents: "none",
+          position: "absolute",
+          zIndex: 12
+        }}
+      />
+    );
+    const debugEl = document.getElementById("rectDebugger");
+    debugEl.innerHTML += ReactDOMServer.renderToString(rectEl);
+    // el.style.width = this.wh.x;
+    // el.style.height = this.wh.y;
   }
 }
 export default Rectangle;

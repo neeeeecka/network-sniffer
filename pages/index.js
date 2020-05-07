@@ -200,6 +200,7 @@ class Index extends Component {
   render() {
     return (
       <div className="bg-gray-800 h-screen  overflow-hidden">
+        <div id="rectDebugger" />
         <Header />
         <div className="flex p-2">
           <UnitContainer
