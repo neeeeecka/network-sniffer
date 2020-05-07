@@ -7,7 +7,8 @@ class Unit extends Component {
     const nextHoldState = nextProps.holdState;
     const curholdState = this.props.holdState;
 
-    const shouldAffect = nextHoldState.uid === this.props.data.uid;
+    // const shouldAffect = nextHoldState.uid === this.props.data.uid;
+    const shouldAffect = true;
     // console.log(nextHoldState);
     const isChanged = !nextHoldState.rect.xy.compareTo(curholdState.rect.xy);
 
@@ -24,13 +25,19 @@ class Unit extends Component {
 
     const holdState = this.props.holdState;
     const xy = holdState.rect.xy;
+    const d = this.props.data;
+
+    const shouldAffect = holdState.uid === d.uid;
 
     const className =
-      "animate-height shadow-xl children-mb-2 p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
-      (t ? " border-gray-700" : " border-orange-700") +
-      (holdState.isAnim ? " transform-duration-25" : " transform-duration-0") +
-      (holdState.isHolded ? " z-10 absolute top-0 left-0" : " z-0 relative");
-    const d = this.props.data;
+      "children-mb-2 animate-height shadow-xl p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
+      (t && shouldAffect ? " border-gray-700" : " border-orange-700") +
+      (holdState.isAnim && shouldAffect
+        ? " transform-duration-25"
+        : " transform-duration-0") +
+      (holdState.isHolded && shouldAffect
+        ? " z-10 absolute top-0 left-0"
+        : " z-0 relative");
     let style = { transform: "tranaslate(0, 0)" };
     if (holdState.uid === d.uid) {
       style = {
@@ -90,7 +97,7 @@ class Expander extends Component {
       this.setState({ rect: newRect });
 
       if (!this.debugId) {
-        this.debugId = newRect.debug("rgba(27,182,255, 0.7)");
+        this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
       }
     }
   }
@@ -130,12 +137,6 @@ class UnitContainer extends Component {
     this.props.units.forEach((unit, i) => {
       units.push(
         <React.Fragment key={unit.data.uid}>
-          <Expander
-            key={i}
-            {...unit.data}
-            {...this.props.holdState}
-            holdStateRect={this.props.holdState.rect}
-          />
           <Unit
             key={"unit" + unit.data.uid}
             index={i}
@@ -144,6 +145,12 @@ class UnitContainer extends Component {
             data={unit.data}
             element={unit.el}
             holdState={this.props.holdState}
+          />
+          <Expander
+            // key={i}
+            {...this.props.data}
+            {...this.props.holdState}
+            holdStateRect={this.props.holdState.rect}
           />
         </React.Fragment>
       );
