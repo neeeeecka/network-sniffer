@@ -131,7 +131,7 @@ class UnitContainer extends Component {
       units.push(
         <React.Fragment key={unit.data.uid}>
           <Expander
-            key={"exp" + unit.data.uid}
+            key={i}
             {...unit.data}
             {...this.props.holdState}
             holdStateRect={this.props.holdState.rect}
