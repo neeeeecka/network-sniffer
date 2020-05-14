@@ -92,13 +92,16 @@ class Expander extends Component {
     return true;
   }
   componentDidMount() {
-    if (this.expander[this.props.uid]) {
-      const cRect = this.expander[this.props.uid].getBoundingClientRect();
+    if (this.element) {
+      const cRect = this.element.getBoundingClientRect();
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
       newRect.wh = new Vector2(cRect.width, 15);
+
+      console.log("mounted with: " + newRect.wh.toString());
       this.setState({ rect: newRect });
     }
+    console.log("mounted - expander", this.element);
   }
   // static getDerivedStateFromProps(nextProps, prevState) {}
   componentDidUpdate(prevProps, prevState) {
@@ -106,9 +109,7 @@ class Expander extends Component {
       this.state.rect.debugEnd(this.debugId);
       this.debugId = null;
     } else {
-      const cRect = this.expander[this.props.uid].getBoundingClientRect();
-
-      this.state.rect.debugAt(this.debugId);
+      const cRect = this.element.getBoundingClientRect();
 
       const newXY = new Vector2(cRect.left, cRect.top);
       const newRect = this.state.rect;
@@ -121,6 +122,7 @@ class Expander extends Component {
       if (!this.debugId) {
         this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
       }
+      this.state.rect.debugAt(this.debugId);
     }
   }
   componentWillUnmount() {
@@ -130,7 +132,7 @@ class Expander extends Component {
     if (typeof window !== "undefined") {
       this.state.rect.debugAt(this.debugId);
     }
-    const shouldExpand = this.props.rect.intersects(this.state.rect);
+    const shouldExpand = this.props.holdState.rect.intersects(this.state.rect);
     // const shouldExpand = this.state.rect.intersectsPoint(
     //   this.props.curMousePos
     // );
@@ -143,8 +145,9 @@ class Expander extends Component {
       <span
         className={"block animate-height " + (shouldExpand ? "h-16" : "h-0")}
         ref={el => {
-          this.expander[this.props.uid] = el;
+          this.element = el;
         }}
+        name={this.props.key}
       />
     );
   }
@@ -168,9 +171,9 @@ class UnitContainer extends Component {
       units.push(
         <Expander
           matches={this.props.holdState.uid === unit.data.uid}
-          key={i + "-e"}
-          {...this.props.data}
-          {...this.props.holdState}
+          key={unit.data.uid + "-e"}
+          listId={unit.data.uid}
+          holdState={this.props.holdState}
           // holdStateRect={this.props.holdState.rect}
         />
       );

@@ -41,5 +41,8 @@ class Vector2 {
   clone() {
     return new Vector2(this.x, this.y);
   }
+  toString() {
+    return `Vector2(x:${this.x}, y:${this.y})`;
+  }
 }
 export default Vector2;
