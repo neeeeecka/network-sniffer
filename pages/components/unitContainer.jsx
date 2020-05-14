@@ -98,21 +98,29 @@ class Expander extends Component {
       newRect.xy = new Vector2(cRect.left, cRect.top);
       newRect.wh = new Vector2(cRect.width, 15);
       this.setState({ rect: newRect });
-
-      if (!this.debugId) {
-        this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
-      }
     }
   }
   // static getDerivedStateFromProps(nextProps, prevState) {}
   componentDidUpdate(prevProps, prevState) {
-    this.state.rect.debugAt(this.debugId);
-    const cRect = this.expander[this.props.uid].getBoundingClientRect();
-    const newXY = new Vector2(cRect.left, cRect.top);
-    const newRect = this.state.rect;
-    if (!newRect.xy.compareTo(newXY)) {
-      newRect.xy = new Vector2(cRect.left, cRect.top);
-      this.setState({ rect: newRect });
+    if (this.props.matches) {
+      this.state.rect.debugEnd(this.debugId);
+      this.debugId = null;
+    } else {
+      const cRect = this.expander[this.props.uid].getBoundingClientRect();
+
+      this.state.rect.debugAt(this.debugId);
+
+      const newXY = new Vector2(cRect.left, cRect.top);
+      const newRect = this.state.rect;
+
+      if (!newRect.xy.compareTo(newXY)) {
+        newRect.xy = new Vector2(cRect.left, cRect.top);
+        this.setState({ rect: newRect });
+      }
+
+      if (!this.debugId) {
+        this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
+      }
     }
   }
   componentWillUnmount() {
@@ -131,7 +139,7 @@ class Expander extends Component {
     //   this.props.startOffset
     // );
 
-    return (
+    return this.props.matches ? null : (
       <span
         className={"block animate-height " + (shouldExpand ? "h-16" : "h-0")}
         ref={el => {
@@ -148,7 +156,7 @@ class UnitContainer extends Component {
     this.props.units.forEach((unit, i) => {
       units.push(
         <Unit
-          key={i + "-u"}
+          key={unit.data.uid + "-u"}
           index={i}
           onUnitClick={this.props.onUnitClick}
           onUnitInit={this.props.onUnitInit}
@@ -159,6 +167,7 @@ class UnitContainer extends Component {
       );
       units.push(
         <Expander
+          matches={this.props.holdState.uid === unit.data.uid}
           key={i + "-e"}
           {...this.props.data}
           {...this.props.holdState}
