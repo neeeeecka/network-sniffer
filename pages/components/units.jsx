@@ -114,7 +114,7 @@ class Units extends Component {
         this.curMousePos.modify(ev.clientX, ev.clientY);
       }
     });
-    const frameHandler = new FrameHandler(30, this.update);
+    const frameHandler = new FrameHandler(20, this.update);
   }
   selectedUnit = { initialPos: { x: 0, y: 0 } };
   moveSpeed = 1;
