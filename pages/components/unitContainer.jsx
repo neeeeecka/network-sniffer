@@ -139,7 +139,7 @@ class Expander extends Component {
       }
 
       if (!this.debugId) {
-        this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
+        // this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
       }
       this.state.rect.debugAt(this.debugId);
     }
