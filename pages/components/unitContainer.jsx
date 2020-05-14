@@ -104,8 +104,16 @@ class Expander extends Component {
       }
     }
   }
-  componentDidUpdate() {
+  // static getDerivedStateFromProps(nextProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) {
     this.state.rect.debugAt(this.debugId);
+    const cRect = this.expander[this.props.uid].getBoundingClientRect();
+    const newXY = new Vector2(cRect.left, cRect.top);
+    const newRect = this.state.rect;
+    if (!newRect.xy.compareTo(newXY)) {
+      newRect.xy = new Vector2(cRect.left, cRect.top);
+      this.setState({ rect: newRect });
+    }
   }
   componentWillUnmount() {
     this.state.rect.debugEnd(this.debugId);
@@ -114,7 +122,7 @@ class Expander extends Component {
     if (typeof window !== "undefined") {
       this.state.rect.debugAt(this.debugId);
     }
-    const shouldExpand = this.props.holdStateRect.intersects(this.state.rect);
+    const shouldExpand = this.props.rect.intersects(this.state.rect);
     // const shouldExpand = this.state.rect.intersectsPoint(
     //   this.props.curMousePos
     // );
@@ -140,7 +148,7 @@ class UnitContainer extends Component {
     this.props.units.forEach((unit, i) => {
       units.push(
         <Unit
-          key={unit.data.uid}
+          key={i + "-u"}
           index={i}
           onUnitClick={this.props.onUnitClick}
           onUnitInit={this.props.onUnitInit}
@@ -151,10 +159,10 @@ class UnitContainer extends Component {
       );
       units.push(
         <Expander
-          key={"ex" + unit.data.uid}
+          key={i + "-e"}
           {...this.props.data}
           {...this.props.holdState}
-          holdStateRect={this.props.holdState.rect}
+          // holdStateRect={this.props.holdState.rect}
         />
       );
     });
