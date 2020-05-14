@@ -21,17 +21,16 @@ class Unit extends Component {
     );
   }
   render() {
-    const t = this.props.data.type === "active";
-
     const holdState = this.props.holdState;
     const xy = holdState.rect.xy;
-    const d = this.props.data;
+    const data = this.props.data;
+    const type = data.type;
 
-    const shouldAffect = holdState.uid === d.uid;
+    const shouldAffect = holdState.uid === data.uid;
 
     const className =
       "children-mb-2 animate-height shadow-xl p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
-      (t && shouldAffect ? " border-gray-700" : " border-orange-700") +
+      (type === "active" ? " border-gray-700" : " border-orange-700") +
       (holdState.isAnim && shouldAffect
         ? " transform-duration-25"
         : " transform-duration-0") +
@@ -39,7 +38,7 @@ class Unit extends Component {
         ? " z-10 absolute top-0 left-0"
         : " z-0 relative");
     let style = { transform: "tranaslate(0, 0)" };
-    if (holdState.uid === d.uid) {
+    if (holdState.uid === data.uid) {
       style = {
         transform: `translate(${xy.x}px, ${xy.y}px)`,
         width: holdState.isHolded ? holdState.rect.wh.x + "px" : "auto"
@@ -49,12 +48,12 @@ class Unit extends Component {
       <div
         className={className}
         onMouseDown={ev => {
-          this.props.onUnitClick(d.uid, ev);
+          this.props.onUnitClick(data.uid, ev);
         }}
         style={style}
         ref={el => {
           if (!this.props.element) {
-            this.props.onUnitInit(d.uid, el);
+            this.props.onUnitInit(data.uid, el);
           }
         }}
       >
@@ -64,9 +63,9 @@ class Unit extends Component {
           <span className="flex-1">Description</span>
         </div>
         <div className="flex pl-5 text-indigo-100 capitalize">
-          <span className="flex-1">{d.uid}</span>
-          <span className="flex-1">{d.mac}</span>
-          <span className="flex-1">{d.description}</span>
+          <span className="flex-1">{data.uid}</span>
+          <span className="flex-1">{data.mac}</span>
+          <span className="flex-1">{data.description}</span>
         </div>
         <div className="flex">
           {/* <span className="w-1/4 text-indigo-200 font-medium">
@@ -112,7 +111,7 @@ class Expander extends Component {
       const t = setTimeout(() => {
         this.tryInit();
         clearTimeout(t);
-      }, 100);
+      }, 250);
     }
   }
   updateDebug() {}
