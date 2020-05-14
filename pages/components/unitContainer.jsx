@@ -89,7 +89,10 @@ class Expander extends Component {
   };
   expander = {};
   shouldComponentUpdate(nextProps, nextState) {
-    return true;
+    return (
+      !nextState.rect.xy.compareTo(this.state.rect.xy) ||
+      !this.props.holdState.rect.xy.compareTo(nextProps.holdState.rect.xy)
+    );
   }
   componentDidMount() {
     if (this.element) {
@@ -98,10 +101,10 @@ class Expander extends Component {
       newRect.xy = new Vector2(cRect.left, cRect.top);
       newRect.wh = new Vector2(cRect.width, 15);
 
-      console.log("mounted with: " + newRect.wh.toString());
+      // console.log("mounted with: " + newRect.wh.toString());
       this.setState({ rect: newRect });
     }
-    console.log("mounted - expander", this.element);
+    // console.log("mounted - expander", this.element);
   }
   // static getDerivedStateFromProps(nextProps, prevState) {}
   componentDidUpdate(prevProps, prevState) {
@@ -146,8 +149,9 @@ class Expander extends Component {
         className={"block animate-height " + (shouldExpand ? "h-16" : "h-0")}
         ref={el => {
           this.element = el;
+          console.log("reffed - ", this.props.listId);
         }}
-        name={this.props.key}
+        key={this.props.listId}
       />
     );
   }
