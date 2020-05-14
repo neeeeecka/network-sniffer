@@ -185,12 +185,12 @@ class Expander extends Component {
 
 class UnitContainer extends Component {
   state = { expandedIndex: null };
-  setExpandedIndex = index => {
-    this.setState({ expandedIndex: index });
-  };
+
   getUnits = () => {
     const units = [];
-    this.props.units.forEach((unit, i) => {
+    const sorted = this.props.units;
+
+    sorted.forEach((unit, i) => {
       units.push(
         <Unit
           key={unit.data.uid + "-u"}
@@ -208,7 +208,7 @@ class UnitContainer extends Component {
           key={unit.data.uid + "-e"}
           listId={unit.data.uid}
           holdState={this.props.holdState}
-          setExpandedIndex={this.setExpandedIndex}
+          setExpandedIndex={this.props.setExpandedIndex}
           listIndex={i + 1}
         />
       );
@@ -239,7 +239,7 @@ class UnitContainer extends Component {
             listId={"first"}
             holdState={this.props.holdState}
             listIndex={0}
-            setExpandedIndex={() => this.setExpandedIndex(0)}
+            setExpandedIndex={() => this.props.setExpandedIndex(0)}
 
             // holdStateRect={this.props.holdState.rect}
           />
