@@ -217,14 +217,14 @@ class UnitContainer extends Component {
           {this.props.title}
         </span>
         <div className="bg-gray-900 items-center text-indigo-100 rounded-md shadow-inner p-3">
+          <Expander
+            matches={false}
+            key={"first-e"}
+            listId={"first"}
+            holdState={this.props.holdState}
+            // holdStateRect={this.props.holdState.rect}
+          />
           {units}
-          {/* {units.length != 1 ? (
-            <Expander
-              uid={"first"}
-              {...this.props.holdState}
-              holdStateRect={this.props.holdState.rect}
-            />
-          ) : null} */}
         </div>
       </div>
     );
