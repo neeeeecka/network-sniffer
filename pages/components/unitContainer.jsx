@@ -84,14 +84,11 @@ class Unit extends Component {
 
 class Expander extends Component {
   state = {
-    rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0))
+    rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
+    shouldExpand: false
   };
   expander = {};
   shouldComponentUpdate(nextProps, nextState) {
-    // return (
-    //   !nextState.rect.xy.compareTo(this.state.rect.xy) ||
-    //   !this.props.holdState.rect.xy.compareTo(nextProps.holdState.rect.xy)
-    // );
     return true;
   }
   tryInit() {
@@ -114,7 +111,7 @@ class Expander extends Component {
       }, 250);
     }
   }
-  updateDebug() {}
+
   componentDidMount() {
     // if (this.element) {
     this.tryInit();
@@ -128,17 +125,30 @@ class Expander extends Component {
       this.debugId = null;
     } else {
       const cRect = this.element.getBoundingClientRect();
-
       const newXY = new Vector2(cRect.left, cRect.top);
       const newRect = this.state.rect;
+      newRect.xy = new Vector2(cRect.left, cRect.top);
 
+      //if expander is moved
       if (!newRect.xy.compareTo(newXY)) {
-        newRect.xy = new Vector2(cRect.left, cRect.top);
-        this.setState({ rect: newRect });
+        this.setState({ rect: newRect }, () => {});
       }
 
+      //if draggable moved
+      if (
+        !this.props.holdState.rect.xy.compareTo(prevProps.holdState.rect.xy)
+      ) {
+        const newShouldExpand = this.props.holdState.rect.intersects(newRect);
+        if (this.shouldExpand !== newShouldExpand) {
+          this.setState({ shouldExpand: newShouldExpand }, () => {
+            if (newShouldExpand) {
+              this.props.setExpandedIndex(this.props.index);
+            }
+          });
+        }
+      }
       if (!this.debugId) {
-        // this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
+        this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
       }
       this.state.rect.debugAt(this.debugId);
     }
@@ -150,19 +160,16 @@ class Expander extends Component {
     if (typeof window !== "undefined") {
       this.state.rect.debugAt(this.debugId);
     }
-    const shouldExpand = this.props.holdState.rect.intersects(this.state.rect);
-    // const shouldExpand = this.state.rect.intersectsPoint(
-    //   this.props.curMousePos
-    // );
-    // const shouldExpand = this.props.holdStateRect.intersectsWithOffset(
-    //   this.state.rect,
-    //   this.props.startOffset
-    // );
+
+    this.shouldExpand = this.state.shouldExpand;
 
     return this.props.matches ? null : (
       <span
         listid={this.props.listId}
-        className={"block animate-height " + (shouldExpand ? "h-16" : "h-0")}
+        className={
+          "block transform-duration-15 " +
+          (this.state.shouldExpand ? "h-16" : "h-0")
+        }
         ref={el => {
           this.element = el;
           // console.log("reffed - ", this.props.listId);
@@ -173,6 +180,10 @@ class Expander extends Component {
 }
 
 class UnitContainer extends Component {
+  state = { expandedIndex: null };
+  setExpandedIndex = index => {
+    this.setState({ expandedIndex: index });
+  };
   getUnits = () => {
     const units = [];
     this.props.units.forEach((unit, i) => {
@@ -189,10 +200,12 @@ class UnitContainer extends Component {
       );
       units.push(
         <Expander
+          index={i + 1}
           matches={this.props.holdState.uid === unit.data.uid}
           key={unit.data.uid + "-e"}
           listId={unit.data.uid}
           holdState={this.props.holdState}
+          setExpandedIndex={this.setExpandedIndex}
           // holdStateRect={this.props.holdState.rect}
         />
       );
@@ -222,6 +235,8 @@ class UnitContainer extends Component {
             key={"first-e"}
             listId={"first"}
             holdState={this.props.holdState}
+            setExpandedIndex={() => this.setExpandedIndex(0)}
+
             // holdStateRect={this.props.holdState.rect}
           />
           {units}

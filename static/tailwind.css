@@ -2,20 +2,17 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-.animate-height {
-  transition: all 0.25s ease;
-}
 .transform-duration-0 {
   transition: none;
 }
 .transform-duration-1 {
-  transition: transform 0.1s ease;
+  transition: all 0.1s ease;
 }
 .transform-duration-15 {
-  transition: transform 0.15s ease;
+  transition: all 0.15s ease;
 }
 .transform-duration-25 {
-  transition: transform 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .children-mb-1 {
