@@ -96,7 +96,7 @@ class Expander extends Component {
       const cRect = this.element.getBoundingClientRect();
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
-      newRect.wh = new Vector2(cRect.width, 15);
+      newRect.wh = new Vector2(cRect.width, 35);
 
       console.log("mounted with: " + newRect.wh.toString());
       this.setState({ rect: newRect }, () => {
@@ -138,11 +138,15 @@ class Expander extends Component {
       if (
         !this.props.holdState.rect.xy.compareTo(prevProps.holdState.rect.xy)
       ) {
-        const newShouldExpand = this.props.holdState.rect.intersects(newRect);
+        // const newShouldExpand = this.props.holdState.rect.intersects(newRect);
+        const newShouldExpand = newRect.intersectsPoint(
+          this.props.holdState.cursorPos
+        );
+
         if (this.shouldExpand !== newShouldExpand) {
           this.setState({ shouldExpand: newShouldExpand }, () => {
             if (newShouldExpand) {
-              this.props.setExpandedIndex(this.props.index);
+              this.props.setExpandedIndex(this.props.listIndex);
             }
           });
         }
@@ -200,13 +204,12 @@ class UnitContainer extends Component {
       );
       units.push(
         <Expander
-          index={i + 1}
           matches={this.props.holdState.uid === unit.data.uid}
           key={unit.data.uid + "-e"}
           listId={unit.data.uid}
           holdState={this.props.holdState}
           setExpandedIndex={this.setExpandedIndex}
-          // holdStateRect={this.props.holdState.rect}
+          listIndex={i + 1}
         />
       );
     });
@@ -235,6 +238,7 @@ class UnitContainer extends Component {
             key={"first-e"}
             listId={"first"}
             holdState={this.props.holdState}
+            listIndex={0}
             setExpandedIndex={() => this.setExpandedIndex(0)}
 
             // holdStateRect={this.props.holdState.rect}

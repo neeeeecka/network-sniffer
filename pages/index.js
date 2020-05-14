@@ -52,7 +52,7 @@ class Index extends Component {
     holdingLocation: {
       rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
       startOffset: new Vector2(0, 0),
-      curMousePos: new Vector2(0, 0),
+      cursorPos: new Vector2(0, 0),
       uid: null,
       isAnim: false,
       isHolded: false
