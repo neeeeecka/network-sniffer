@@ -89,21 +89,36 @@ class Expander extends Component {
   };
   expander = {};
   shouldComponentUpdate(nextProps, nextState) {
-    return (
-      !nextState.rect.xy.compareTo(this.state.rect.xy) ||
-      !this.props.holdState.rect.xy.compareTo(nextProps.holdState.rect.xy)
-    );
+    // return (
+    //   !nextState.rect.xy.compareTo(this.state.rect.xy) ||
+    //   !this.props.holdState.rect.xy.compareTo(nextProps.holdState.rect.xy)
+    // );
+    return true;
   }
-  componentDidMount() {
+  tryInit() {
     if (this.element) {
       const cRect = this.element.getBoundingClientRect();
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
       newRect.wh = new Vector2(cRect.width, 15);
 
-      // console.log("mounted with: " + newRect.wh.toString());
-      this.setState({ rect: newRect });
+      console.log("mounted with: " + newRect.wh.toString());
+      this.setState({ rect: newRect }, () => {
+        // this.state.rect.debugAt(this.debugId);
+      });
+    } else {
+      console.log("Waiting for element");
+      const t = setTimeout(() => {
+        this.tryInit();
+        clearTimeout(t);
+      }, 100);
     }
+  }
+  updateDebug() {}
+  componentDidMount() {
+    // if (this.element) {
+    this.tryInit();
+    // }
     // console.log("mounted - expander", this.element);
   }
   // static getDerivedStateFromProps(nextProps, prevState) {}
@@ -146,12 +161,12 @@ class Expander extends Component {
 
     return this.props.matches ? null : (
       <span
+        listid={this.props.listId}
         className={"block animate-height " + (shouldExpand ? "h-16" : "h-0")}
         ref={el => {
           this.element = el;
-          console.log("reffed - ", this.props.listId);
+          // console.log("reffed - ", this.props.listId);
         }}
-        key={this.props.listId}
       />
     );
   }
