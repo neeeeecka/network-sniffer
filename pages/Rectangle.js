@@ -41,6 +41,8 @@ class Rectangle {
     const rectDomEl = document.getElementById(debugId);
     if (rectDomEl) {
       rectDomEl.style.transform = `translate(${this.xy.x}px, ${this.xy.y}px)`;
+      rectDomEl.style.width = this.wh.x + "px";
+      rectDomEl.style.height = this.wh.y + "px";
     }
   }
   debugEnd(debugId) {

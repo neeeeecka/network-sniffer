@@ -104,7 +104,8 @@ class Expander extends Component {
 
       console.log("mounted with: " + newRect.wh.toString());
       this.setState({ rect: newRect }, () => {
-        // this.state.rect.debugAt(this.debugId);
+        this.state.rect.debugAt(this.debugId);
+        console.log(this.debugId);
       });
     } else {
       console.log("Waiting for element");
