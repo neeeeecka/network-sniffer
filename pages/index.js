@@ -34,20 +34,20 @@ class Index extends Component {
           uid: "32133730e03fsdf",
           mac: "555-78f-53f-923",
           description: "Android",
-          type: "blocked"
+          type: "active"
         },
         el: undefined,
-        sortIndex: 0
+        sortIndex: 2
       },
       {
         data: {
           uid: "321355f",
           mac: "555-78f-53f-923",
           description: "Bundroid",
-          type: "blocked"
+          type: "active"
         },
         el: undefined,
-        sortIndex: 1
+        sortIndex: 3
       }
     ]
   };
@@ -76,7 +76,7 @@ class Index extends Component {
     });
     //set index of moved unit
     selectedUnit.data.type = type;
-    selectedUnit.sortIndex = sortIndex + prevSortIndex;
+    selectedUnit.sortIndex = sortIndex;
     selectedUnit.el = null;
 
     this.setState({ units: newUnits });
