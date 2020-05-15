@@ -16,7 +16,8 @@ class Index extends Component {
           description: "windows 10 pc",
           type: "active"
         },
-        el: undefined
+        el: undefined,
+        sortIndex: 0
       },
       {
         data: {
@@ -25,7 +26,8 @@ class Index extends Component {
           description: "mac osX pc",
           type: "active"
         },
-        el: undefined
+        el: undefined,
+        sortIndex: 1
       },
       {
         data: {
@@ -34,7 +36,8 @@ class Index extends Component {
           description: "Android",
           type: "blocked"
         },
-        el: undefined
+        el: undefined,
+        sortIndex: 0
       },
       {
         data: {
@@ -43,17 +46,25 @@ class Index extends Component {
           description: "Bundroid",
           type: "blocked"
         },
-        el: undefined
+        el: undefined,
+        sortIndex: 1
       }
     ]
   };
-  updateUnitType = (uid, type) => {
+  updateUnitType = (uid, type, sortIndex) => {
     const newUnits = [...this.state.units];
     const selectedUnit = newUnits.find(unit => {
       return unit.data.uid === uid;
     });
+    //move all units indices by 1 to avoid conflict
+    newUnits.forEach(unit => {
+      unit.sortIndex += 1;
+    });
+    //set index of moved unit
     selectedUnit.data.type = type;
+    selectedUnit.sortIndex = sortIndex;
     selectedUnit.el = null;
+
     this.setState({ units: newUnits });
   };
   onUnitInit = (uid, el) => {

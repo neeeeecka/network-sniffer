@@ -188,7 +188,9 @@ class UnitContainer extends Component {
 
   getUnits = () => {
     const units = [];
-    const sorted = this.props.units;
+    const sorted = this.props.units.sort((a, b) => {
+      return a.sortIndex - b.sortIndex;
+    });
 
     sorted.forEach((unit, i) => {
       units.push(

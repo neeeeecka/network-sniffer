@@ -21,7 +21,8 @@ class Units extends Component {
     },
     selectedUnit: undefined,
     isHolding: false,
-    shouldUpdate: false
+    shouldUpdate: false,
+    expandedIndex: null
   };
   onUnitClick = (uid, ev) => {
     this.setState({ isHolding: true });
@@ -72,7 +73,11 @@ class Units extends Component {
         });
 
         if (activeCont) {
-          this.props.updateUnitType(holdState.uid, activeCont);
+          this.props.updateUnitType(
+            holdState.uid,
+            activeCont,
+            this.state.expandedIndex
+          );
         }
 
         // console.log(selectedUnit.data.type);
