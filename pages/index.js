@@ -52,13 +52,21 @@ class Index extends Component {
     ]
   };
   updateUnitType = (uid, type, sortIndex) => {
-    const newUnits = [...this.state.units];
+    const newUnits = [...this.state.units].sort((a, b) => {
+      return a.sortIndex - b.sortIndex;
+    });
 
+    let prevSortIndex = newUnits[sortIndex - 1]
+      ? newUnits[sortIndex - 1].sortIndex
+      : 0;
     //move all next indices by 1 to avoid conflict
     newUnits.forEach(unit => {
       if (unit.data.type === type) {
         if (unit.sortIndex >= sortIndex) {
           unit.sortIndex++;
+          // if (unit.sortIndex > lastLargestSortIndex) {
+          //   lastLargestSortIndex = unit.sortIndex;
+          // }
         }
       }
     });
@@ -68,7 +76,7 @@ class Index extends Component {
     });
     //set index of moved unit
     selectedUnit.data.type = type;
-    selectedUnit.sortIndex = sortIndex;
+    selectedUnit.sortIndex = sortIndex + prevSortIndex;
     selectedUnit.el = null;
 
     this.setState({ units: newUnits });
