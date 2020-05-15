@@ -189,44 +189,32 @@ class Units extends Component {
 
   render() {
     return (
-      <div className="bg-gray-800 h-screen  overflow-hidden">
-        <div
-          id="rectDebugger"
-          style={{
-            overflow: "hidden",
-            width: "100%",
-            height: "100%",
-            position: "absolute"
+      <div className="flex p-2">
+        <UnitContainer
+          title="Active users"
+          units={this.props.units.filter(u => u.data.type === "active")}
+          onUnitClick={this.onUnitClick}
+          onInit={el => {
+            this.initCont(el, false);
           }}
+          onUnitInit={this.props.onUnitInit}
+          onUnitInit={this.unitInit}
+          holdState={this.state.holdingLocation}
+          expand={this.state.containers.active}
+          setExpandedIndex={this.setExpandedIndex}
         />
-        <Header />
-        <div className="flex p-2">
-          <UnitContainer
-            title="Active users"
-            units={this.props.units.filter(u => u.data.type === "active")}
-            onUnitClick={this.onUnitClick}
-            onInit={el => {
-              this.initCont(el, false);
-            }}
-            onUnitInit={this.props.onUnitInit}
-            onUnitInit={this.unitInit}
-            holdState={this.state.holdingLocation}
-            expand={this.state.containers.active}
-            setExpandedIndex={this.setExpandedIndex}
-          />
-          <UnitContainer
-            title="Blocked users"
-            units={this.props.units.filter(u => u.data.type === "blocked")}
-            onUnitClick={this.onUnitClick}
-            onInit={el => {
-              this.initCont(el, true);
-            }}
-            onUnitInit={this.props.onUnitInit}
-            holdState={this.state.holdingLocation}
-            expand={this.state.containers.blocked}
-            setExpandedIndex={this.setExpandedIndex}
-          />
-        </div>
+        <UnitContainer
+          title="Blocked users"
+          units={this.props.units.filter(u => u.data.type === "blocked")}
+          onUnitClick={this.onUnitClick}
+          onInit={el => {
+            this.initCont(el, true);
+          }}
+          onUnitInit={this.props.onUnitInit}
+          holdState={this.state.holdingLocation}
+          expand={this.state.containers.blocked}
+          setExpandedIndex={this.setExpandedIndex}
+        />
       </div>
     );
   }

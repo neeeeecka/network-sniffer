@@ -53,12 +53,18 @@ class Index extends Component {
   };
   updateUnitType = (uid, type, sortIndex) => {
     const newUnits = [...this.state.units];
+
+    //move all next indices by 1 to avoid conflict
+    newUnits.forEach(unit => {
+      if (unit.data.type === type) {
+        if (unit.sortIndex >= sortIndex) {
+          unit.sortIndex++;
+        }
+      }
+    });
+
     const selectedUnit = newUnits.find(unit => {
       return unit.data.uid === uid;
-    });
-    //move all units indices by 1 to avoid conflict
-    newUnits.forEach(unit => {
-      unit.sortIndex += 1;
     });
     //set index of moved unit
     selectedUnit.data.type = type;
@@ -75,7 +81,17 @@ class Index extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="bg-gray-800 h-screen  overflow-hidden">
+        <div
+          id="rectDebugger"
+          style={{
+            overflow: "hidden",
+            width: "100%",
+            height: "100%",
+            position: "absolute"
+          }}
+        />
+        <Header />
         <Units
           units={this.state.units}
           updateUnitType={this.updateUnitType}
