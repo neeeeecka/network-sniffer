@@ -57,11 +57,11 @@ class Unit extends Component {
           }
         }}
       >
-        <div className="flex pl-5 text-gray-200 capitalize font-medium">
+        {/* <div className="flex pl-5 text-gray-200 capitalize font-medium">
           <span className="flex-1">Unique ID</span>
           <span className="flex-1">Mac</span>
           <span className="flex-1">Description</span>
-        </div>
+        </div> */}
         <div className="flex pl-5 text-indigo-100 capitalize">
           <span className="flex-1">{data.uid}</span>
           <span className="flex-1">{data.mac}</span>
@@ -96,7 +96,7 @@ class Expander extends Component {
       const cRect = this.element.getBoundingClientRect();
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
-      newRect.wh = new Vector2(cRect.width, 35);
+      newRect.wh = new Vector2(cRect.width, 25);
 
       console.log("mounted with: " + newRect.wh.toString());
       this.setState({ rect: newRect }, () => {
@@ -152,7 +152,7 @@ class Expander extends Component {
         }
       }
       if (!this.debugId) {
-        // this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
+        this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
       }
       this.state.rect.debugAt(this.debugId);
     }

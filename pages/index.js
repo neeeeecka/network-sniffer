@@ -44,7 +44,7 @@ class Index extends Component {
           uid: "321355f",
           mac: "555-78f-53f-923",
           description: "Bundroid",
-          type: "active"
+          type: "blocked"
         },
         el: undefined,
         sortIndex: 3
@@ -52,34 +52,35 @@ class Index extends Component {
     ]
   };
   updateUnitType = (uid, type, sortIndex) => {
-    const newUnits = [...this.state.units].sort((a, b) => {
-      return a.sortIndex - b.sortIndex;
-    });
+    const newUnits = [...this.state.units];
 
-    let prevSortIndex = newUnits[sortIndex - 1]
-      ? newUnits[sortIndex - 1].sortIndex
-      : 0;
-    //move all next indices by 1 to avoid conflict
-    newUnits.forEach(unit => {
-      if (unit.data.type === type) {
-        if (unit.sortIndex >= sortIndex) {
-          unit.sortIndex++;
-          // if (unit.sortIndex > lastLargestSortIndex) {
-          //   lastLargestSortIndex = unit.sortIndex;
-          // }
-        }
-      }
-    });
+    const unitsOfType = newUnits
+      .filter(unit => unit.data.type === type)
+      .sort((a, b) => {
+        return a.sortIndex - b.sortIndex;
+      });
 
     const selectedUnit = newUnits.find(unit => {
       return unit.data.uid === uid;
     });
-    //set index of moved unit
+
+    if (unitsOfType.includes(selectedUnit)) {
+      unitsOfType.splice(sortIndex, 1);
+    }
+    unitsOfType.splice(sortIndex, 0, selectedUnit);
+
+    const otherUnits = newUnits.filter(unit => !unitsOfType.includes(unit));
+    console.log("others:", otherUnits);
+    console.log("of type:", unitsOfType);
+
+    const combined = unitsOfType.concat(otherUnits);
+
+    console.log("combined:", combined);
+
     selectedUnit.data.type = type;
-    selectedUnit.sortIndex = sortIndex;
     selectedUnit.el = null;
 
-    this.setState({ units: newUnits });
+    this.setState({ units: combined });
   };
   onUnitInit = (uid, el) => {
     const newUnits = [...this.state.units];
