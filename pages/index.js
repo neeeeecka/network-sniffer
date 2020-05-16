@@ -54,11 +54,7 @@ class Index extends Component {
   updateUnitType = (uid, type, sortIndex) => {
     const newUnits = [...this.state.units];
 
-    const unitsOfType = newUnits
-      .filter(unit => unit.data.type === type)
-      .sort((a, b) => {
-        return a.sortIndex - b.sortIndex;
-      });
+    const unitsOfType = newUnits.filter(unit => unit.data.type === type);
 
     const selectedUnit = newUnits.find(unit => {
       return unit.data.uid === uid;
@@ -66,7 +62,6 @@ class Index extends Component {
 
     if (unitsOfType.includes(selectedUnit)) {
       unitsOfType.splice(unitsOfType.indexOf(selectedUnit), 1);
-      console.log("includes");
     }
 
     const otherUnits = newUnits.filter(
