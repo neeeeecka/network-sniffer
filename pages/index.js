@@ -65,7 +65,8 @@ class Index extends Component {
     });
 
     if (unitsOfType.includes(selectedUnit)) {
-      unitsOfType.splice(sortIndex, 1);
+      unitsOfType.splice(unitsOfType.indexOf(selectedUnit), 1);
+      console.log("includes");
     }
 
     const otherUnits = newUnits.filter(
