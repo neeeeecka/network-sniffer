@@ -67,9 +67,13 @@ class Index extends Component {
     if (unitsOfType.includes(selectedUnit)) {
       unitsOfType.splice(sortIndex, 1);
     }
+
+    const otherUnits = newUnits.filter(
+      unit => !unitsOfType.includes(unit) && unit !== selectedUnit
+    );
+
     unitsOfType.splice(sortIndex, 0, selectedUnit);
 
-    const otherUnits = newUnits.filter(unit => !unitsOfType.includes(unit));
     console.log("others:", otherUnits);
     console.log("of type:", unitsOfType);
 
