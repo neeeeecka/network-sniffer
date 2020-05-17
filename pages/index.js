@@ -6,6 +6,14 @@ import Vector2 from "./Vector2";
 import FrameHandler from "./FrameHandler";
 import Units from "./components/units";
 
+function array_move(arr, old_index, new_index) {
+  if (new_index > 0 && new_index > old_index) {
+    arr.splice(new_index - 1, 0, arr.splice(old_index, 1)[0]);
+  } else {
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+  }
+}
+
 class Index extends Component {
   state = {
     units: [
@@ -59,16 +67,15 @@ class Index extends Component {
     const selectedUnit = newUnits.find(unit => {
       return unit.data.uid === uid;
     });
-
-    if (unitsOfType.includes(selectedUnit)) {
-      unitsOfType.splice(unitsOfType.indexOf(selectedUnit), 1);
-    }
-
     const otherUnits = newUnits.filter(
       unit => !unitsOfType.includes(unit) && unit !== selectedUnit
     );
 
-    unitsOfType.splice(sortIndex, 0, selectedUnit);
+    if (type === selectedUnit.data.type) {
+      array_move(unitsOfType, unitsOfType.indexOf(selectedUnit), sortIndex);
+    } else {
+      unitsOfType.splice(sortIndex, 0, selectedUnit);
+    }
 
     console.log("others:", otherUnits);
     console.log("of type:", unitsOfType);
