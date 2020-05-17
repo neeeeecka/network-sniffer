@@ -1,4 +1,17 @@
 import express from "express";
+import mongodb from "mongodb";
+const MongoClient = mongodb.MongoClient;
+// Connection URL
+const url = "mongodb://localhost:27017";
+const dbName = "spoofer";
+
+MongoClient.connect(url, function(err, client) {
+  console.log("Connected successfully to server");
+
+  const db = client.db(dbName);
+
+  client.close();
+});
 
 const app = express();
 const port = 2999;
