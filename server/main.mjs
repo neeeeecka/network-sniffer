@@ -17,28 +17,28 @@ const app = express();
 const port = 2999;
 
 app.get("/", async (req, res) => {
+  return res.send("Server is running");
+});
+
+app.get("/units", async (req, res) => {
   const units = await dbActions.getUnits();
   console.log(units);
   const str = JSON.stringify(units);
   return res.send(str);
 });
 
-app.get("/units", (req, res) => {
-  return res.send("Received a GET HTTP method");
-});
-
-app.post("/units", (req, res) => {
+app.post("/units", async (req, res) => {
   return res.send("Received a POST HTTP method");
 });
 
 //put = add new user, patch = modify user
-app.put("/units/:unitId", (req, res) => {
+app.put("/units/:unitId", async (req, res) => {
   const userId = req.params.userId;
 
   return res.send("Received a PUT HTTP method");
 });
 
-app.delete("/units/:unitId", (req, res) => {
+app.delete("/units/:unitId", async (req, res) => {
   const userId = req.params.userId;
 
   return res.send("Received a DELETE HTTP method");

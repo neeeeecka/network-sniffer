@@ -5,7 +5,6 @@ class DBActions {
 
   getUnits = async () => {
     let collection = this.db.collection("userData");
-
     let res = await collection.find({}).toArray();
 
     return res;
