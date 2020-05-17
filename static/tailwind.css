@@ -13,6 +13,7 @@
 }
 .transform-duration-25 {
   transition: all 0.25s ease;
+  /* transition: all 5s ease; */
 }
 
 .children-mb-1 {

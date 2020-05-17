@@ -48,7 +48,9 @@ class Unit extends Component {
       <div
         className={className}
         onMouseDown={ev => {
-          this.props.onUnitClick(data.uid, ev);
+          if (ev.button == 0) {
+            this.props.onUnitClick(data.uid, ev);
+          }
         }}
         style={style}
         ref={el => {
@@ -152,7 +154,7 @@ class Expander extends Component {
         }
       }
       if (!this.debugId) {
-        this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
+        // this.debugId = newRect.debug("rgba(27,182,255, 0.5)");
       }
       this.state.rect.debugAt(this.debugId);
     }

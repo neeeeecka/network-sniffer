@@ -77,12 +77,7 @@ class Index extends Component {
       unitsOfType.splice(sortIndex, 0, selectedUnit);
     }
 
-    console.log("others:", otherUnits);
-    console.log("of type:", unitsOfType);
-
     const combined = unitsOfType.concat(otherUnits);
-
-    console.log("combined:", combined);
 
     selectedUnit.data.type = type;
     selectedUnit.el = null;
