@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import UnitContainer from "./components/unitContainer";
 import Header from "./components/header";
-import Rectangle from "./Rectangle";
-import Vector2 from "./Vector2";
-import FrameHandler from "./FrameHandler";
 import Units from "./components/units";
 
 function array_move(arr, old_index, new_index) {

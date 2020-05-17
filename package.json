@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next",
+    "server": "node server/main.mjs",
     "build": "next build",
     "build:css": "postcss static/tailwind.css -o static/main.css",
     "watch:css": "postcss static/tailwind.css -o Static/main.css"
@@ -19,6 +20,7 @@
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "autoprefixer": "^9.7.6",
+    "express": "^4.17.1",
     "next": "^9.3.6",
     "postcss-cli": "^7.1.1",
     "postcss-import": "^12.0.1",
