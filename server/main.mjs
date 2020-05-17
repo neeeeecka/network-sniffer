@@ -1,23 +1,26 @@
 import express from "express";
 import mongodb from "mongodb";
+import DBActions from "./dbActions.mjs";
+
 const MongoClient = mongodb.MongoClient;
 // Connection URL
 const url = "mongodb://localhost:27017";
 const dbName = "spoofer";
+const dbActions = new DBActions(null);
 
 MongoClient.connect(url, function(err, client) {
   console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-
-  client.close();
+  dbActions.db = client.db(dbName);
 });
 
 const app = express();
 const port = 2999;
 
-app.get("/", (req, res) => {
-  return res.send("Server is up!");
+app.get("/", async (req, res) => {
+  const units = await dbActions.getUnits();
+  console.log(units);
+  const str = JSON.stringify(units);
+  return res.send(str);
 });
 
 app.get("/units", (req, res) => {
