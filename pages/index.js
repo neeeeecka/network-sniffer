@@ -88,10 +88,17 @@ class Index extends Component {
     found.el = el;
     this.setState({ units: newUnits });
   };
-  componentDidMount = async () => {
+
+  fetchUnits = async () => {
     let response = await fetch(`${cURL}/users`, {
       method: "GET"
     });
+    let data = await response.json();
+    console.log(data);
+  };
+
+  componentDidMount = async () => {
+    this.fetchUnits();
   };
   render() {
     return (
