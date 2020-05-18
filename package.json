@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next",
-    "server": "nodemon server/main.mjs",
+    "server": "nodemon server/main.mjs --watch server/",
     "build": "next build",
     "build:css": "postcss static/tailwind.css -o static/main.css",
     "watch:css": "postcss static/tailwind.css -o Static/main.css"

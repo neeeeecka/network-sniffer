@@ -17,8 +17,9 @@ MongoClient.connect(url, function(err, client) {
 const app = express();
 const port = 2999;
 
+//curl -X GET http://localhost:2999/units
 //curl -H "Content-Type: application/json" -X POST -d '{"test":"yes"}' http://localhost:2999/units
-
+//curl -H "Content-Type: application/json" -X POST -d '{"mac":"good-mac"}' http://localhost:2999/units
 app.use(
   bodyParser.json({
     // extended: true

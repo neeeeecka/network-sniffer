@@ -23,6 +23,7 @@ class DBActions {
           description: "",
           type: "active"
         });
+        console.log(res);
       } else {
         return "Bad mac";
       }

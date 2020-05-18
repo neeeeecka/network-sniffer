@@ -10,6 +10,8 @@ function array_move(arr, old_index, new_index) {
   }
 }
 
+const cURL = "http://localhost:2999/";
+
 class Index extends Component {
   state = {
     units: [
@@ -85,6 +87,11 @@ class Index extends Component {
     const found = newUnits.find(unit => unit.data.uid === uid);
     found.el = el;
     this.setState({ units: newUnits });
+  };
+  componentDidMount = async () => {
+    let response = await fetch(`${cURL}/users`, {
+      method: "GET"
+    });
   };
   render() {
     return (
