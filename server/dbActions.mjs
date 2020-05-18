@@ -33,8 +33,11 @@ class DBActions {
   };
   editUnit = async (_id, changes) => {
     const newValues = { $set: changes };
-    let res = await this.unitsCollection.updateOne({ _id: _id }, newValues);
-    return res;
+    let result = await this.unitsCollection.findOneAndUpdate(
+      { _id: _id },
+      newValues
+    );
+    return result.value;
   };
 }
 export default DBActions;
