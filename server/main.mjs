@@ -11,11 +11,13 @@ const dbActions = new DBActions(null);
 
 MongoClient.connect(url, function(err, client) {
   console.log("Connected successfully to server");
-  dbActions.db = client.db(dbName);
+  dbActions.init(client.db(dbName));
 });
 
 const app = express();
 const port = 2999;
+
+//curl -H "Content-Type: application/json" -X POST -d '{"test":"yes"}' http://localhost:2999/units
 
 app.use(
   bodyParser.json({
@@ -34,9 +36,8 @@ app.get("/units", async (req, res) => {
 });
 
 app.post("/units", async (req, res) => {
-  // await dbActions.add
-  console.log(req.body, req.rawHeaders);
-  return res.send("Received a POST HTTP method");
+  const unitData = await dbActions.addUnit(req.body);
+  return res.send(unitData);
 });
 
 //put = add new user, patch = modify user
