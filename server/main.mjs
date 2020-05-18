@@ -49,14 +49,13 @@ app.post("/units", async (req, res) => {
 
 //put = add new user, patch = modify user
 app.put("/units/:unitId", async (req, res) => {
-  // console.log(req.params.unitId);
   let _id = req.params.unitId;
   if (mongodb.ObjectID.isValid(_id)) {
     const unitId = mongodb.ObjectID(_id);
     const result = await dbActions.editUnit(unitId, req.body);
-    return res.send({ res: result });
+    return res.send(result);
   } else {
-    return res.send({ res: "invalid ID" });
+    return res.send({ error: "Invalid ID" });
   }
 });
 
