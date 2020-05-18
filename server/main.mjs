@@ -1,7 +1,9 @@
 import express from "express";
 import mongodb from "mongodb";
-import DBActions from "./dbActions.mjs";
 import bodyParser from "body-parser";
+import cors from "cors";
+
+import DBActions from "./dbActions.mjs";
 
 const MongoClient = mongodb.MongoClient;
 // Connection URL
@@ -25,6 +27,7 @@ app.use(
     // extended: true
   })
 );
+app.use(cors());
 
 app.get("/", async (req, res) => {
   return res.send("Server is running");

@@ -7,7 +7,7 @@ class Unit extends Component {
     const nextHoldState = nextProps.holdState;
     const curholdState = this.props.holdState;
 
-    // const shouldAffect = nextHoldState.uid === this.props.data.uid;
+    // const shouldAffect = nextHoldState._id === this.props.data._id;
     const shouldAffect = true;
     // console.log(nextHoldState);
     const isChanged = !nextHoldState.rect.xy.compareTo(curholdState.rect.xy);
@@ -26,7 +26,7 @@ class Unit extends Component {
     const data = this.props.data;
     const type = data.type;
 
-    const shouldAffect = holdState.uid === data.uid;
+    const shouldAffect = holdState._id === data._id;
 
     const className =
       "children-mb-2 animate-height shadow-xl p-2 rounded-r cursor-pointer text-center border-l-4 bg-gray-800 select-none" +
@@ -38,7 +38,7 @@ class Unit extends Component {
         ? " z-10 absolute top-0 left-0"
         : " z-0 relative");
     let style = { transform: "tranaslate(0, 0)" };
-    if (holdState.uid === data.uid) {
+    if (holdState._id === data._id) {
       style = {
         transform: `translate(${xy.x}px, ${xy.y}px)`,
         width: holdState.isHolded ? holdState.rect.wh.x + "px" : "auto"
@@ -49,13 +49,13 @@ class Unit extends Component {
         className={className}
         onMouseDown={ev => {
           if (ev.button == 0) {
-            this.props.onUnitClick(data.uid, ev);
+            this.props.onUnitClick(data._id, ev);
           }
         }}
         style={style}
         ref={el => {
           if (!this.props.element) {
-            this.props.onUnitInit(data.uid, el);
+            this.props.onUnitInit(data._id, el);
           }
         }}
       >
@@ -65,7 +65,7 @@ class Unit extends Component {
           <span className="flex-1">Description</span>
         </div> */}
         <div className="flex pl-5 text-indigo-100 capitalize">
-          <span className="flex-1">{data.uid}</span>
+          <span className="flex-1">{data._id}</span>
           <span className="flex-1">{data.mac}</span>
           <span className="flex-1">{data.description}</span>
         </div>
@@ -197,7 +197,7 @@ class UnitContainer extends Component {
     sorted.forEach((unit, i) => {
       units.push(
         <Unit
-          key={unit.data.uid + "-u"}
+          key={unit.data._id + "-u"}
           index={i}
           onUnitClick={this.props.onUnitClick}
           onUnitInit={this.props.onUnitInit}
@@ -208,9 +208,9 @@ class UnitContainer extends Component {
       );
       units.push(
         <Expander
-          matches={this.props.holdState.uid === unit.data.uid}
-          key={unit.data.uid + "-e"}
-          listId={unit.data.uid}
+          matches={this.props.holdState._id === unit.data._id}
+          key={unit.data._id + "-e"}
+          listId={unit.data._id}
           holdState={this.props.holdState}
           setExpandedIndex={this.props.setExpandedIndex}
           listIndex={i + 1}

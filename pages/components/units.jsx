@@ -15,7 +15,7 @@ class Units extends Component {
       rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
       startOffset: new Vector2(0, 0),
       cursorPos: new Vector2(0, 0),
-      uid: null,
+      _id: null,
       isAnim: false,
       isHolded: false
     },
@@ -24,13 +24,13 @@ class Units extends Component {
     shouldUpdate: false,
     expandedIndex: null
   };
-  onUnitClick = (uid, ev) => {
+  onUnitClick = (_id, ev) => {
     this.setState({ isHolding: true });
     const t = 0.025;
     ev.persist();
     const timeout = setTimeout(() => {
       if (this.state.isHolding) {
-        const unit = this.props.units.find(unit => unit.data.uid === uid);
+        const unit = this.props.units.find(unit => unit.data._id === _id);
         const cRect = unit.el.getBoundingClientRect();
         this.curMousePos = new Vector2(ev.clientX, ev.clientY);
         this.lastMousePos = this.curMousePos;
@@ -45,7 +45,7 @@ class Units extends Component {
         const newHoldingState = { ...this.state.holdingLocation };
         newHoldingState.rect = newRect;
         newHoldingState.startOffset = new Vector2(cRect.left, cRect.top);
-        newHoldingState.uid = uid;
+        newHoldingState._id = _id;
         newHoldingState.isHolded = true;
 
         this.setState({
@@ -74,7 +74,7 @@ class Units extends Component {
 
         if (activeCont) {
           this.props.updateUnitType(
-            holdState.uid,
+            holdState._id,
             activeCont,
             this.state.expandedIndex
           );
@@ -101,7 +101,7 @@ class Units extends Component {
             },
             () => {
               const t = setTimeout(() => {
-                newHoldState.uid = null;
+                newHoldState._id = null;
                 newHoldState.isAnim = false;
 
                 this.setState({
@@ -141,7 +141,7 @@ class Units extends Component {
         rect: newRect,
         startOffset: holdState.startOffset,
         cursorPos: this.curMousePos,
-        uid: holdState.uid,
+        _id: holdState._id,
         isHolded: true
       };
 
@@ -161,10 +161,10 @@ class Units extends Component {
   setExpandedIndex = index => {
     this.setState({ expandedIndex: index });
   };
-  unitInit = (uid, el) => {
+  unitInit = (_id, el) => {
     console.log("Re-inited");
     const newUnits = [...this.props.units];
-    const found = newUnits.find(unit => unit.data.uid === uid);
+    const found = newUnits.find(unit => unit.data._id === _id);
     found.el = el;
     this.setState({ units: newUnits });
   };

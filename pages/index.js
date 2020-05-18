@@ -10,60 +10,30 @@ function array_move(arr, old_index, new_index) {
   }
 }
 
-const cURL = "http://localhost:2999/";
+const cURL = "http://localhost:2999";
 
 class Index extends Component {
   state = {
     units: [
-      {
-        data: {
-          uid: "3244ff730e03169f0c3e720",
-          mac: "5f4-123f-323f-32",
-          description: "windows 10 pc",
-          type: "active"
-        },
-        el: undefined,
-        sortIndex: 0
-      },
-      {
-        data: {
-          uid: "5eb1581730e03167f0c3e921",
-          mac: "123-123f-53f-32",
-          description: "mac osX pc",
-          type: "active"
-        },
-        el: undefined,
-        sortIndex: 1
-      },
-      {
-        data: {
-          uid: "32133730e03fsdf",
-          mac: "555-78f-53f-923",
-          description: "Android",
-          type: "active"
-        },
-        el: undefined,
-        sortIndex: 2
-      },
-      {
-        data: {
-          uid: "321355f",
-          mac: "555-78f-53f-923",
-          description: "Bundroid",
-          type: "blocked"
-        },
-        el: undefined,
-        sortIndex: 3
-      }
+      // {
+      //   data: {
+      //     _id: "3244ff730e03169f0c3e720",
+      //     mac: "5f4-123f-323f-32",
+      //     description: "windows 10 pc",
+      //     type: "active"
+      //   },
+      //   el: undefined,
+      //   sortIndex: 0
+      // }
     ]
   };
-  updateUnitType = (uid, type, sortIndex) => {
+  updateUnitType = (_id, type, sortIndex) => {
     const newUnits = [...this.state.units];
 
     const unitsOfType = newUnits.filter(unit => unit.data.type === type);
 
     const selectedUnit = newUnits.find(unit => {
-      return unit.data.uid === uid;
+      return unit.data._id === _id;
     });
     const otherUnits = newUnits.filter(
       unit => !unitsOfType.includes(unit) && unit !== selectedUnit
@@ -82,19 +52,25 @@ class Index extends Component {
 
     this.setState({ units: combined });
   };
-  onUnitInit = (uid, el) => {
+  onUnitInit = (_id, el) => {
     const newUnits = [...this.state.units];
-    const found = newUnits.find(unit => unit.data.uid === uid);
+    const found = newUnits.find(unit => unit.data._id === _id);
     found.el = el;
     this.setState({ units: newUnits });
   };
 
   fetchUnits = async () => {
-    let response = await fetch(`${cURL}/users`, {
+    let response = await fetch(`${cURL}/units`, {
       method: "GET"
     });
     let data = await response.json();
-    console.log(data);
+    const units = [];
+    data.forEach(unit => {
+      units.push({ data: unit, el: undefined });
+    });
+    this.setState({ units: units });
+    console.log(units);
+    // return data;
   };
 
   componentDidMount = async () => {
