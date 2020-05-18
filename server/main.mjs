@@ -18,8 +18,8 @@ const app = express();
 const port = 2999;
 
 app.use(
-  bodyParser.urlencoded({
-    extended: true
+  bodyParser.json({
+    // extended: true
   })
 );
 
@@ -35,7 +35,7 @@ app.get("/units", async (req, res) => {
 
 app.post("/units", async (req, res) => {
   // await dbActions.add
-  console.log(req.body);
+  console.log(req.body, req.rawHeaders);
   return res.send("Received a POST HTTP method");
 });
 
