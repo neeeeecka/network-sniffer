@@ -35,7 +35,8 @@ class DBActions {
     const newValues = { $set: changes };
     let result = await this.unitsCollection.findOneAndUpdate(
       { _id: _id },
-      newValues
+      newValues,
+      { returnOriginal: false }
     );
     return result.value;
   };
