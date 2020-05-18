@@ -1,6 +1,7 @@
 import express from "express";
 import mongodb from "mongodb";
 import DBActions from "./dbActions.mjs";
+import bodyParser from "body-parser";
 
 const MongoClient = mongodb.MongoClient;
 // Connection URL
@@ -16,18 +17,25 @@ MongoClient.connect(url, function(err, client) {
 const app = express();
 const port = 2999;
 
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
 app.get("/", async (req, res) => {
   return res.send("Server is running");
 });
 
 app.get("/units", async (req, res) => {
   const units = await dbActions.getUnits();
-  console.log(units);
   const str = JSON.stringify(units);
   return res.send(str);
 });
 
 app.post("/units", async (req, res) => {
+  // await dbActions.add
+  console.log(req.body);
   return res.send("Received a POST HTTP method");
 });
 
