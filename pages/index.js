@@ -69,12 +69,24 @@ class Index extends Component {
       units.push({ data: unit, el: undefined });
     });
     this.setState({ units: units });
-    console.log(units);
-    // return data;
+  };
+  fetchEditUnit = async (_id, changes) => {
+    let response = await fetch(`${cURL}/units/${_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(changes)
+    });
+    let data = await response.json();
+    console.log(data);
   };
 
   componentDidMount = async () => {
     this.fetchUnits();
+
+    const changes = { description: "new description", type: "blocked" };
+    this.fetchEditUnit("5ec2d273b9ce783c8832e938", changes);
   };
   render() {
     return (

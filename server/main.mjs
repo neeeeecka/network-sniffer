@@ -19,9 +19,12 @@ MongoClient.connect(url, function(err, client) {
 const app = express();
 const port = 2999;
 
-//curl -X GET http://localhost:2999/units
-//curl -H "Content-Type: application/json" -X POST -d '{"test":"yes"}' http://localhost:2999/units
-//curl -H "Content-Type: application/json" -X POST -d '{"mac":"good-mac"}' http://localhost:2999/units
+/*
+curl -X GET http://localhost:2999/units
+curl -H "Content-Type: application/json" -X POST -d '{"test":"yes"}' http://localhost:2999/units
+curl -H "Content-Type: application/json" -X POST -d '{"mac":"some-mac-mac"}' http://localhost:2999/units
+*/
+
 app.use(
   bodyParser.json({
     // extended: true
@@ -46,9 +49,10 @@ app.post("/units", async (req, res) => {
 
 //put = add new user, patch = modify user
 app.put("/units/:unitId", async (req, res) => {
-  const userId = req.params.userId;
-
-  return res.send("Received a PUT HTTP method");
+  console.log(req.params.unitId);
+  const unitId = req.params.unitId;
+  const result = await dbActions.editUnit(unitId, req.body);
+  return res.send({ res: result });
 });
 
 app.delete("/units/:unitId", async (req, res) => {

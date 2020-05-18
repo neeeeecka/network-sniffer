@@ -23,13 +23,18 @@ class DBActions {
           description: "",
           type: "active"
         });
-        console.log(res);
+        return "User added.";
       } else {
         return "Bad mac";
       }
     } else {
       return "No mac";
     }
+  };
+  editUnit = async (_id, changes) => {
+    const newValues = { $set: changes };
+    let res = await this.unitsCollection.updateOne({ _id: _id }, newValues);
+    return res;
   };
 }
 export default DBActions;
