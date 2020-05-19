@@ -28,17 +28,23 @@ class Units extends Component {
     this.setState({ isHolding: true });
     const t = 0.025;
     ev.persist();
+
+    this.curMousePos = new Vector2(ev.clientX, ev.clientY);
+    this.lastMousePos = this.curMousePos;
+
     const timeout = setTimeout(() => {
       if (this.state.isHolding) {
         const unit = this.props.units.find(unit => unit.data._id === _id);
         const cRect = unit.el.getBoundingClientRect();
-        this.curMousePos = new Vector2(ev.clientX, ev.clientY);
-        this.lastMousePos = this.curMousePos;
 
         const newRect = new Rectangle(
-          new Vector2(cRect.left, cRect.top),
+          // new Vector2(cRect.left, cRect.top),
+          new Vector2(this.curMousePos.x, this.curMousePos.y),
           new Vector2(cRect.width, cRect.height)
         );
+
+        console.log(this.curMousePos, newRect.xy);
+
         if (!this.debugId) {
           // this.debugId = newRect.debug("rgba(255,103,27, 0.7)");
         }

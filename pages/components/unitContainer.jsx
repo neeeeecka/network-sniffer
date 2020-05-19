@@ -98,7 +98,7 @@ class Expander extends Component {
       const cRect = this.element.getBoundingClientRect();
       const newRect = this.state.rect.clone();
       newRect.xy = new Vector2(cRect.left, cRect.top);
-      newRect.wh = new Vector2(cRect.width, 25);
+      newRect.wh = new Vector2(cRect.width, 35);
 
       console.log("mounted with: " + newRect.wh.toString());
       this.setState({ rect: newRect }, () => {
