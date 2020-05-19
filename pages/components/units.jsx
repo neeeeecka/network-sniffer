@@ -78,40 +78,36 @@ class Units extends Component {
             activeCont,
             this.state.expandedIndex
           );
-
-          const newContainers = { active: false, blocked: false };
-          let newHoldState = { ...this.state.holdingLocation };
-          newHoldState.rect = new Rectangle(
-            new Vector2(0, 0),
-            new Vector2(0, 0)
-          );
-          newHoldState.isAnim = true;
-          newHoldState.isHolded = false;
-          newHoldState.startOffset = new Vector2(0, 0);
-          newHoldState.cursorPos = new Vector2(0, 0);
-          // newHoldState.rect.debugAt(this.debugId);
-
-          this.setState(
-            {
-              containers: newContainers,
-              holdingLocation: newHoldState,
-              isHolding: false,
-              shouldUpdate: false,
-              selectedUnit: undefined
-            },
-            () => {
-              const t = setTimeout(() => {
-                newHoldState._id = null;
-                newHoldState.isAnim = false;
-
-                this.setState({
-                  holdingLocation: newHoldState
-                });
-                clearTimeout(t);
-              }, 0.25 * 1000);
-            }
-          );
         }
+        const newContainers = { active: false, blocked: false };
+        let newHoldState = { ...this.state.holdingLocation };
+        newHoldState.rect = new Rectangle(new Vector2(0, 0), new Vector2(0, 0));
+        newHoldState.isAnim = true;
+        newHoldState.isHolded = false;
+        newHoldState.startOffset = new Vector2(0, 0);
+        newHoldState.cursorPos = new Vector2(0, 0);
+        // newHoldState.rect.debugAt(this.debugId);
+
+        this.setState(
+          {
+            containers: newContainers,
+            holdingLocation: newHoldState,
+            isHolding: false,
+            shouldUpdate: false,
+            selectedUnit: undefined
+          },
+          () => {
+            const t = setTimeout(() => {
+              newHoldState._id = null;
+              newHoldState.isAnim = false;
+
+              this.setState({
+                holdingLocation: newHoldState
+              });
+              clearTimeout(t);
+            }, 0.25 * 1000);
+          }
+        );
       }
     });
     window.addEventListener("mousemove", ev => {
