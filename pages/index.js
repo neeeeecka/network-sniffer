@@ -27,30 +27,34 @@ class Index extends Component {
       // }
     ]
   };
-  updateUnitType = (_id, type, sortIndex) => {
+  updateUnitType = async (_id, type, sortIndex) => {
     const newUnits = [...this.state.units];
 
-    const unitsOfType = newUnits.filter(unit => unit.data.type === type);
+    const changes = { type: type };
+    const result = await this.fetchEditUnit(_id, changes);
+    if (!result.error) {
+      const unitsOfType = newUnits.filter(unit => unit.data.type === type);
 
-    const selectedUnit = newUnits.find(unit => {
-      return unit.data._id === _id;
-    });
-    const otherUnits = newUnits.filter(
-      unit => !unitsOfType.includes(unit) && unit !== selectedUnit
-    );
+      const selectedUnit = newUnits.find(unit => {
+        return unit.data._id === _id;
+      });
+      const otherUnits = newUnits.filter(
+        unit => !unitsOfType.includes(unit) && unit !== selectedUnit
+      );
 
-    if (type === selectedUnit.data.type) {
-      array_move(unitsOfType, unitsOfType.indexOf(selectedUnit), sortIndex);
-    } else {
-      unitsOfType.splice(sortIndex, 0, selectedUnit);
+      if (type === selectedUnit.data.type) {
+        array_move(unitsOfType, unitsOfType.indexOf(selectedUnit), sortIndex);
+      } else {
+        unitsOfType.splice(sortIndex, 0, selectedUnit);
+      }
+
+      const combined = unitsOfType.concat(otherUnits);
+
+      selectedUnit.data.type = type;
+      selectedUnit.el = null;
+
+      this.setState({ units: combined });
     }
-
-    const combined = unitsOfType.concat(otherUnits);
-
-    selectedUnit.data.type = type;
-    selectedUnit.el = null;
-
-    this.setState({ units: combined });
   };
   onUnitInit = (_id, el) => {
     const newUnits = [...this.state.units];
@@ -79,14 +83,11 @@ class Index extends Component {
       body: JSON.stringify(changes)
     });
     let data = await response.json();
-    console.log(data);
+    return data;
   };
 
   componentDidMount = async () => {
     this.fetchUnits();
-
-    const changes = { description: "new description", type: "blocked" };
-    this.fetchEditUnit("5ec2d273b9ce783c8832e938", changes);
   };
   render() {
     return (
