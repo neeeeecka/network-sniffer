@@ -38,8 +38,8 @@ class Units extends Component {
         const cRect = unit.el.getBoundingClientRect();
 
         const newRect = new Rectangle(
-          // new Vector2(cRect.left, cRect.top),
-          new Vector2(this.curMousePos.x, this.curMousePos.y),
+          new Vector2(cRect.left, cRect.top),
+          // new Vector2(this.curMousePos.x, this.curMousePos.y),
           new Vector2(cRect.width, cRect.height)
         );
 
