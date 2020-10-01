@@ -2,17 +2,8 @@ import React, { Component } from "react";
 import Header from "./components/header";
 import Units from "./components/units";
 
-function array_move(arr, old_index, new_index) {
-  if (new_index > 0 && new_index > old_index) {
-    arr.splice(new_index - 1, 0, arr.splice(old_index, 1)[0]);
-  } else {
-    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-  }
-}
 
 const cURL = "http://localhost:2999";
-
-//just a test
 
 class Index extends Component {
   state = {
@@ -30,7 +21,7 @@ class Index extends Component {
     ]
   };
 
-  componentDidMount = async () => {};
+  componentDidMount = async () => { };
   render() {
     return (
       <div className="bg-gray-800 h-screen  overflow-hidden">
