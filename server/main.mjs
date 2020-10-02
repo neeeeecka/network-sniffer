@@ -71,6 +71,7 @@ var rl = readline.createInterface({
 // rl.on('line', function (line) {
 
 // });
-const trafficReader = new TrafficReader("lo");
+//eth0 or lo
+const trafficReader = new TrafficReader("eth0");
 
 export default app;
