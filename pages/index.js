@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Header from "./components/header";
 import Units from "./components/units";
 
-
 const cURL = "http://localhost:2999";
 
 class Index extends Component {
