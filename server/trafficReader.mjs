@@ -2,7 +2,7 @@
 import * as pcap from "pcap";
 
 class TrafficReader {
-    constructor(networkInterface) {
+    constructor(networkInterface, io) {
         const pcap_session = pcap.createSession(networkInterface, { filter: "" });
 
         let i = 0;
@@ -11,6 +11,9 @@ class TrafficReader {
             // console.log(" ICMP Packet: " + "raw_packet.buf.length" + " bytes.");
             // i++;
             // console.log(raw_packet);
+           io.emit("packet", "raw_packet " + i);
+           i++;
+                
         });
         console.log("listening for packets at: " + networkInterface)
     }

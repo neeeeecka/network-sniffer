@@ -6,7 +6,7 @@ import cors from "cors";
 import DBActions from "./dbActions.mjs";
 import TrafficReader from "./trafficReader.mjs";
 
-import readline from "readline";
+// import readline from "readline";
 import { networkInterfaces } from 'os';
 import socketio from "socket.io";
 import * as http from "http";
@@ -70,11 +70,19 @@ httpApp.listen(port, () => {
 const interfaces = networkInterfaces();
 // console.log(interfaces);
 
+const sockets = [];
+
+const trafficReader = new TrafficReader("wlp2s0", io);
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('connected', socket.id);
+  sockets.push(socket);
+  socket.on("disconnectMe", () => {
+    socket.disconnect();
+    console.log("disconnected ", socket.id);
+  });
+  
 });
 
-// const trafficReader = new TrafficReader("wlp2s0");
 
 export default app;

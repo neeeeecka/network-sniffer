@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Header from "./components/header";
 import Units from "./components/units";
+import io from "socket.io-client";
 
 const cURL = "http://localhost:2999";
 
@@ -20,7 +21,21 @@ class Index extends Component {
     ]
   };
 
-  componentDidMount = async () => { };
+  componentDidMount = async () => { 
+    const socket = io("http://localhost:2999");
+    socket.on('connect', () => {
+      console.log("Connected to ws server. my id: ", socket.id);
+    });
+    socket.on("packet", (data) => {
+      console.log(data);
+      socket.emit("socketAnswer", null);
+    });
+    console.log(socket);
+    this.socket = socket;
+  };
+  componentWillUnmount = () =>{
+    this.socket.emit("disconnectMe", null);
+  }
   render() {
     return (
       <div className="bg-gray-800 h-screen  overflow-hidden">
