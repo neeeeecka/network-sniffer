@@ -26,7 +26,7 @@ module.exports = {
     width: ["responsive"],
     inset: ["responsive"],
     borderColor: ["responsive", "hover", "focus"],
-    background: ["hover"],
+    backgroundColor: ["hover", "focus", "active"],
     transitionDuration: ["hover"]
   },
   plugins: [

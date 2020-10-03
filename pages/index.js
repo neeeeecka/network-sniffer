@@ -37,7 +37,7 @@ class Index extends Component {
         <content className = "flex">
           <span className = "flex flex-1 mx-2 mt-2">
             <input className = "w-full px-3 py-1 focus:outline-none" type = "text" placeholder="filter" onChange = {this.updateFilter} value = {this.state.filter}/>
-            <button className = "bg-gray-100 hover:ng-gray-300 px-3 border-2 focus:outline-none">Update</button>
+            <button className = "bg-gray-100 hover:bg-gray-400 active:bg-gray-500 px-3 border-2 focus:outline-none">Update</button>
           </span>
         </content>
       </div>
