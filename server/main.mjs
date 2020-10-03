@@ -81,6 +81,9 @@ io.on('connection', (socket) => {
     socket.disconnect();
     console.log("disconnected ", socket.id);
   });
+  socket.on("filter", filter => {
+    console.log(filter);
+  });
   
 });
 
