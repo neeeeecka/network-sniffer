@@ -8,6 +8,8 @@ import TrafficReader from "./trafficReader.mjs";
 
 import readline from "readline";
 import { networkInterfaces } from 'os';
+import socketio from "socket.io";
+import * as http from "http";
 
 const MongoClient = mongodb.MongoClient;
 // Connection URL
@@ -21,8 +23,11 @@ MongoClient.connect(url, { useUnifiedTopology: true },
     dbActions.init(client.db(dbName));
   });
 
-const app = express();
 const port = 2999;
+
+const app = express();
+const httpApp = http.createServer(app);
+const io = socketio(httpApp);
 
 /*
 curl -X GET http://localhost:2999/units
@@ -58,20 +63,18 @@ app.delete("/units/:unitId", async (req, res) => {
 
 });
 
-// app.listen(port, () => console.log(`Server listening on port ${port}!`));
-
-var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  terminal: false
+httpApp.listen(port, () => {
+  console.log(`listening on *${port}`);
 });
-// console.log("Choose your network interface: ");
-// const interfaces = networkInterfaces();
-// console.log(interfaces);
-// rl.on('line', function (line) {
 
-// });
-//eth0 or lo
-const trafficReader = new TrafficReader("eth0");
+const interfaces = networkInterfaces();
+// console.log(interfaces);
+
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
+// const trafficReader = new TrafficReader("wlp2s0");
 
 export default app;
