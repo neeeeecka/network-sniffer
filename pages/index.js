@@ -15,26 +15,81 @@ let cached = [];
 let firstCall = true;
 const savedPackets = [];
 
+let socket = null;
+
 class Index extends Component {
   state = {
     filter: "",
-    packets: [],
     currentPacketInspect: null,
-    tdWidths: [0, 0, 0, 0]
   };
 
-  setTdWidth = (td, width) => {
-    const newTdWidths = [...this.state.tdWidths];
-    newTdWidths[td] = width;
+  constructor(props) {
+    super(props);
 
-    this.setState({ tdWidths: newTdWidths });
-  }
-
-  componentDidMount = async () => {
-    const socket = io("http://localhost:2999");
+    socket = io("http://localhost:2999");
     socket.on('connect', () => {
       console.log("Connected to ws server. my id: ", socket.id);
     });
+  }
+
+  componentDidMount = () => {
+
+  };
+  componentWillUnmount = () => {
+    socket.emit("disconnectMe", null);
+  }
+
+  updateFilter = (e) => {
+    this.setState({ filter: e.target.value }, () => {
+      socket.emit("filter", this.state.filter);
+    });
+  }
+
+  inspectPacket = (packet) => {
+    savedPackets.push(packet);
+    this.setState({ currentPacketInspect: packet });
+  }
+
+  getCurrentInspectPacket = () => {
+    if (this.state.currentPacketInspect) {
+      console.log(this.state.currentPacketInspect.buffer);
+    }
+    return null;
+  }
+
+
+  render() {
+    return (
+      <div className="bg-gray-800 h-screen flex flex-col overflow-hidden">
+        <Header />
+        <content className="flex flex-col m-2 flex-1">
+          <span className="flex">
+            <input className="w-full px-3 py-1 focus:outline-none" type="text" placeholder="filter" onChange={this.updateFilter} value={this.state.filter} />
+            <button className="bg-gray-100 hover:bg-gray-400 active:bg-gray-500 px-3 border-2 focus:outline-none">Update</button>
+          </span>
+          {/* <div className="bg-gray-100 flex-1 flex-col overflow-auto " style={{ flex: "0 0 calc(100vh - 285px)" }}>
+            {this.getPacketsFor(0)}
+          </div> */}
+          <PacketList socket={this.socket} />
+          <div className="mt-2 bg-gray-100" style={{ height: "150px" }}>
+            {this.getCurrentInspectPacket()}
+          </div>
+        </content>
+      </div>
+    );
+  }
+}
+
+class PacketList extends Component {
+  state = {
+    packets: [],
+    tdWidths: [0, 0, 0, 0]
+  };
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount = (props) => {
+    console.log(props);
     socket.on("packet", (data) => {
       // console.log(data);
 
@@ -62,24 +117,13 @@ class Index extends Component {
         // console.log(buffer);
       }
     });
-    console.log(socket);
-    this.socket = socket;
-  };
-  componentWillUnmount = () => {
-    this.socket.emit("disconnectMe", null);
   }
+  setTdWidth = (td, width) => {
+    const newTdWidths = [...this.state.tdWidths];
+    newTdWidths[td] = width;
 
-  updateFilter = (e) => {
-    this.setState({ filter: e.target.value }, () => {
-      this.socket.emit("filter", this.state.filter);
-    });
+    this.setState({ tdWidths: newTdWidths });
   }
-
-  inspectPacket = (packet) => {
-    savedPackets.push(packet);
-    this.setState({ currentPacketInspect: packet });
-  }
-
   getPacketsFor = (index) => {
     const domPackets = [];
     this.state.packets.forEach((packet, i) => {
@@ -94,28 +138,18 @@ class Index extends Component {
     });
     return domPackets;
   }
-  render() {
-    return (
-      <div className="bg-gray-800 h-screen flex flex-col overflow-hidden">
-        <Header />
-        <content className="flex flex-col m-2 flex-1">
-          <span className="flex">
-            <input className="w-full px-3 py-1 focus:outline-none" type="text" placeholder="filter" onChange={this.updateFilter} value={this.state.filter} />
-            <button className="bg-gray-100 hover:bg-gray-400 active:bg-gray-500 px-3 border-2 focus:outline-none">Update</button>
-          </span>
-          <span className="text-gray-200 font-bold my-1">
-            <Resizable i="0" setTdWidth={this.setTdWidth}>Source</Resizable>
-            <Resizable i="1" setTdWidth={this.setTdWidth}>Destination</Resizable>
-            <Resizable i="2" setTdWidth={this.setTdWidth}>Protocol</Resizable>
-            <Resizable i="3" setTdWidth={this.setTdWidth}>Length</Resizable>
-          </span>
-          <div className="bg-gray-100 flex-1 flex-col overflow-auto " style={{ flex: "0 0 calc(100vh - 285px)" }}>
-            {this.getPacketsFor(0)}
-          </div>
-          <div className="mt-2 bg-gray-100" style={{ height: "150px" }}></div>
-        </content>
+  render = () => {
+    return <React.Fragment>
+      <span className="text-gray-200 font-bold my-1">
+        <Resizable i="0" setTdWidth={this.setTdWidth}>Source</Resizable>
+        <Resizable i="1" setTdWidth={this.setTdWidth}>Destination</Resizable>
+        <Resizable i="2" setTdWidth={this.setTdWidth}>Protocol</Resizable>
+        <Resizable i="3" setTdWidth={this.setTdWidth}>Length</Resizable>
+      </span>
+      <div className="bg-gray-100 flex-1 flex-col overflow-auto " style={{ flex: "0 0 calc(100vh - 285px)" }}>
+        {this.getPacketsFor(0)}
       </div>
-    );
+    </React.Fragment>;
   }
 }
 
