@@ -59,7 +59,7 @@ class HexQuarter extends Component {
                     );
                 }
                 lineAsciiDom.push(
-                    <span key={i} onMouseLeave={this.clearHighLight} onMouseOver={() => this.setHighlightAt(hoverPos)} className={hoverState + " py-1"}>{lineAscii[i]}</span>
+                    <span key={i} onMouseLeave={this.clearHighLight} onMouseOver={() => this.setHighlightAt(hoverPos)} className={hoverState + " py-1"}>{lineAscii[i - 1]}</span>
                 );
             }
 
