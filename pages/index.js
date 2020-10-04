@@ -22,7 +22,8 @@ class Index extends Component {
   state = {
     filter: "",
     currentPacketInspect: null,
-    currentPacketDump: null
+    currentPacketDump: null,
+    highlights: 0
   };
 
   constructor(props) {
@@ -58,31 +59,45 @@ class Index extends Component {
     }
   }
 
+  setHighlightAt = (index) => {
+    this.setState({ highlights: index });
+  }
+
   getCurrentInspectPacket = () => {
     if (this.state.currentPacketDump) {
       const dom = [];
       const splitLines = this.state.currentPacketDump.split(/\r?\n/);
-      splitLines.forEach((line, i) => {
+      splitLines.forEach((line, lineIndex) => {
         const colon = line.indexOf(":");
         const lineStart = line.substring(0, colon);
         const lineHex = line.substring(colon + 2, colon + 1 + 4 * 8 + 8);
-        const lineAscii = line.substring(colon + 1 + 4 * 8 + 8, line.length);
+        const lineAscii = line.substring(colon + 3 + 4 * 8 + 8, line.length);
 
         const lineHexDom = [];
         const lineAsciiDom = [];
 
         let lineHexSplit = lineHex.split(" ");
-        console.log(lineHexSplit)
-        for (let i = 0; i < 8; i++) {
-          lineHexDom.push(
-            <span key={i} className="px-2 py-1 hover:bg-blue-400">{lineHexSplit[i]}</span>
+
+        let c = 0;
+        console.log(lineAscii);
+        for (let i = 1; i <= 16; i++) {
+          let cSave = c;
+          if (i % 2 == 0) {
+            lineHexDom.push(
+              <span key={c++} onMouseLeave={() => {
+                this.setState({ highlights: "" });
+              }} onMouseOver={() => this.setHighlightAt(cSave + "-" + lineIndex)} className={((cSave + "-" + lineIndex) == this.state.highlights ? "bg-blue-400" : "") + " px-2 py-1"}>{lineHexSplit[cSave]}</span>
+            );
+          }
+          lineAsciiDom.push(
+            <span key={i} onMouseOver={() => this.setHighlightAt(cSave + "-" + lineIndex)} className={((cSave + "-" + lineIndex) == this.state.highlights ? "bg-blue-400" : "") + " py-1"}>{lineAscii[i]}</span>
           );
         }
 
-        dom.push(<tr key={i}>
+        dom.push(<tr key={lineIndex}>
           <td>{lineStart}</td>
           <td>{lineHexDom}</td>
-          <td>{lineAscii}</td>
+          <td>{lineAsciiDom}</td>
         </tr>);
 
       });
