@@ -59,7 +59,7 @@ class PacketList extends Component {
         const domPackets = [];
         this.state.packets.forEach((packet, i) => {
             domPackets.push(
-                <span onClick={() => this.props.inspectPacket(packet)} className={"hover:bg-gray-300 active:bg-gray-400 cursor-pointer flex " + (packetColors[packet.protocol])} key={i}>
+                <span onClick={() => this.props.inspectPacket(packet)} className={"hover:bg-gray-200 active:bg-gray-300 cursor-pointer flex " + (packetColors[packet.protocol])} key={i}>
                     <Resizable width={this.state.tdWidths[0]}>{packet.source}</Resizable>
                     <Resizable width={this.state.tdWidths[1]}>{packet.destination}</Resizable>
                     <Resizable width={this.state.tdWidths[2]}>{packet.protocol}</Resizable>

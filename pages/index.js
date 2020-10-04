@@ -65,12 +65,28 @@ class Index extends Component {
       splitLines.forEach((line, i) => {
         const colon = line.indexOf(":");
         const lineStart = line.substring(0, colon);
-        const lineHex = line.substring(colon + 1, 4 * 8 + 8);
-        const lineAscii = line.substring(colon + 4 * 8 + 8 + 1, line.length - 1);
+        const lineHex = line.substring(colon + 2, colon + 1 + 4 * 8 + 8);
+        const lineAscii = line.substring(colon + 1 + 4 * 8 + 8, line.length);
 
-        dom.push(<span key={i} className="block">{line}</span>);
+        const lineHexDom = [];
+        const lineAsciiDom = [];
+
+        let lineHexSplit = lineHex.split(" ");
+        console.log(lineHexSplit)
+        for (let i = 0; i < 8; i++) {
+          lineHexDom.push(
+            <span key={i} className="px-2 py-1 hover:bg-blue-400">{lineHexSplit[i]}</span>
+          );
+        }
+
+        dom.push(<tr key={i}>
+          <td>{lineStart}</td>
+          <td>{lineHexDom}</td>
+          <td>{lineAscii}</td>
+        </tr>);
+
       });
-      return dom;
+      return <table className="block hexdump"><tbody>{dom}</tbody></table>;
     }
     return null;
   }
@@ -86,7 +102,7 @@ class Index extends Component {
             <button className="bg-gray-100 hover:bg-gray-400 active:bg-gray-500 px-3 border-2 focus:outline-none">Update</button>
           </span>
           <PacketList socket={socket} inspectPacket={this.inspectPacket} />
-          <div className="mt-2 bg-gray-100" style={{ height: "150px" }}>
+          <div className="mt-2 bg-gray-100 overflow-auto " style={{ height: "150px" }}>
             {this.getCurrentInspectPacket()}
           </div>
         </content>

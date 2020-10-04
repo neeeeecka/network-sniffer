@@ -79,7 +79,7 @@ const trafficReader = new TrafficReader("wlp2s0", io);
 // io.eio.pingInterval = 1000;
 
 io.on('connection', (socket) => {
-  console.log('connected', socket.id);
+  console.log('connected', socket.id, socket.handshake.address);
   socket.on("disconnectMe", () => {
     socket.disconnect();
     console.log("disconnected ", socket.id);
