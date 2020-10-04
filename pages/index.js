@@ -3,11 +3,6 @@ import Header from "./components/header";
 import PacketList from "./components/packetList";
 import io from "socket.io-client";
 
-const cURL = "http://localhost:2999";
-
-
-let cached = [];
-let firstCall = true;
 const savedPackets = [];
 
 const socket = io("http://localhost:2999");
@@ -60,10 +55,7 @@ class Index extends Component {
             <input className="w-full px-3 py-1 focus:outline-none" type="text" placeholder="filter" onChange={this.updateFilter} value={this.state.filter} />
             <button className="bg-gray-100 hover:bg-gray-400 active:bg-gray-500 px-3 border-2 focus:outline-none">Update</button>
           </span>
-          {/* <div className="bg-gray-100 flex-1 flex-col overflow-auto " style={{ flex: "0 0 calc(100vh - 285px)" }}>
-            {this.getPacketsFor(0)}
-          </div> */}
-          <PacketList socket={socket} />
+          <PacketList socket={socket} inspectPacket={this.inspectPacket} />
           <div className="mt-2 bg-gray-100" style={{ height: "150px" }}>
             {this.getCurrentInspectPacket()}
           </div>

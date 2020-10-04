@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Resizable from "./resizable";
+import StaticHelpers from "./staticHelpers";
 
 const packetColors = {
     "udp": "bg-blue-200",
@@ -7,6 +8,7 @@ const packetColors = {
 };
 
 let socket = null;
+const maxPacketsAtOnce = 25;
 
 class PacketList extends Component {
     state = {
@@ -41,7 +43,7 @@ class PacketList extends Component {
                 }
                 newPackets.push({ source: source, destination: destination, protocol: transportLayer.decoderName, length: length, buffer: buffer });
 
-                newPackets = newPackets.slice(newPackets.length - 50, newPackets.length);
+                newPackets = newPackets.slice(Math.max(newPackets.length - maxPacketsAtOnce, 0));
                 this.setState({ packets: newPackets });
                 // console.log(buffer);
             }
@@ -57,7 +59,7 @@ class PacketList extends Component {
         const domPackets = [];
         this.state.packets.forEach((packet, i) => {
             domPackets.push(
-                <span onClick={() => this.inspectPacket(packet)} className={"hover:bg-gray-300 active:bg-gray-400 cursor-pointer flex " + (packetColors[packet.protocol])} key={i}>
+                <span onClick={() => this.props.inspectPacket(packet)} className={"hover:bg-gray-300 active:bg-gray-400 cursor-pointer flex " + (packetColors[packet.protocol])} key={i}>
                     <Resizable width={this.state.tdWidths[0]}>{packet.source}</Resizable>
                     <Resizable width={this.state.tdWidths[1]}>{packet.destination}</Resizable>
                     <Resizable width={this.state.tdWidths[2]}>{packet.protocol}</Resizable>

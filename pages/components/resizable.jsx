@@ -49,7 +49,7 @@ class Resizable extends Component {
     }
     render = () => {
         return <span
-            className="td inline-block "
+            className={"td inline-block " + (this.props.setTdWidth ? "resizable" : "")}
             index={this.props.i}
             style={this.props.width ? { width: this.props.width } : { width: this.state.width }}
             onMouseDown={(e) => {
