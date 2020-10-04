@@ -13,11 +13,13 @@ const packetColors = {
 
 let cached = [];
 let firstCall = true;
+const savedPackets = [];
 
 class Index extends Component {
   state = {
     filter: "",
     packets: [],
+    currentPacketInspect: null,
     tdWidths: [0, 0, 0, 0]
   };
 
@@ -44,18 +46,20 @@ class Index extends Component {
         const source = data.payload.payload.saddr.addr.join(".");
 
         let length = 0;
+        let buffer = transportLayer.data;
         if (transportLayer.decoderName == "tcp") {
           length = transportLayer.dataLength;
-          // console.log(transportLayer);
+          // buffer = transportLayer.data;
         }
         if (transportLayer.decoderName == "udp") {
           length = transportLayer.length;
+          // console.log(transportLayer.data);
         }
-        newPackets.push({ source: source, destination: destination, protocol: transportLayer.decoderName, length: length });
+        newPackets.push({ source: source, destination: destination, protocol: transportLayer.decoderName, length: length, buffer: buffer });
 
         newPackets = newPackets.slice(newPackets.length - 50, newPackets.length);
         this.setState({ packets: newPackets });
-        // console.log(data.payload);
+        // console.log(buffer);
       }
     });
     console.log(socket);
@@ -65,17 +69,22 @@ class Index extends Component {
     this.socket.emit("disconnectMe", null);
   }
 
-
   updateFilter = (e) => {
     this.setState({ filter: e.target.value }, () => {
       this.socket.emit("filter", this.state.filter);
     });
   }
+
+  inspectPacket = (packet) => {
+    savedPackets.push(packet);
+    this.setState({ currentPacketInspect: packet });
+  }
+
   getPacketsFor = (index) => {
     const domPackets = [];
     this.state.packets.forEach((packet, i) => {
       domPackets.push(
-        <span className={" flex " + (packetColors[packet.protocol])} key={i}>
+        <span onClick={() => this.inspectPacket(packet)} className={"hover:bg-gray-300 active:bg-gray-400 cursor-pointer flex " + (packetColors[packet.protocol])} key={i}>
           <Resizable width={this.state.tdWidths[0]}>{packet.source}</Resizable>
           <Resizable width={this.state.tdWidths[1]}>{packet.destination}</Resizable>
           <Resizable width={this.state.tdWidths[2]}>{packet.protocol}</Resizable>
