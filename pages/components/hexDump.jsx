@@ -1,6 +1,22 @@
 import React, { Component } from "react";
 
+const quarterSize = 4;
+
 class HexDump extends Component {
+    render = () => {
+        const dom = [];
+        const splitLines = this.props.hexDump.split(/\r?\n/);
+
+        for (let i = 0; i <= splitLines.length - quarterSize; i += quarterSize) {
+            dom.push(
+                <HexQuarter hexDumpLines={splitLines.slice(i, i + quarterSize)} />
+            );
+        }
+        return <table className="block hexdump"><tbody>{dom}</tbody></table>;
+    }
+}
+
+class HexQuarter extends Component {
     state = {
         highlights: 0
     }
@@ -12,10 +28,16 @@ class HexDump extends Component {
         this.setState({ highlights: "-null" });
     }
 
+    shouldComponentUpdate = (nextProps, nextState) => {
+        return nextState.highlights != this.state.highlights;
+    }
+
     render = () => {
         const dom = [];
-        const splitLines = this.props.hexDump.split(/\r?\n/);
-        splitLines.forEach((line, lineIndex) => {
+
+        for (let lineIndex = 0; lineIndex < quarterSize; lineIndex++) {
+            const line = this.props.hexDumpLines[lineIndex];
+
             const colon = line.indexOf(":");
             const lineStart = line.substring(0, colon);
             const lineHex = line.substring(colon + 2, colon + 1 + 4 * 8 + 8);
@@ -46,9 +68,12 @@ class HexDump extends Component {
                 <td>{lineHexDom}</td>
                 <td>{lineAsciiDom}</td>
             </tr>);
+        }
 
-        });
-        return <table className="block hexdump"><tbody>{dom}</tbody></table>;
+        return <React.Fragment>
+            {dom}
+        </React.Fragment>;
     }
 }
+
 export default HexDump;
