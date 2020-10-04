@@ -9,7 +9,7 @@ class HexDump extends Component {
 
         for (let i = 0; i <= splitLines.length - quarterSize; i += quarterSize) {
             dom.push(
-                <HexQuarter hexDumpLines={splitLines.slice(i, i + quarterSize)} />
+                <HexQuarter uid={this.props.uid} hexDumpLines={splitLines.slice(i, i + quarterSize)} />
             );
         }
         return <table className="block hexdump"><tbody>{dom}</tbody></table>;
@@ -29,7 +29,7 @@ class HexQuarter extends Component {
     }
 
     shouldComponentUpdate = (nextProps, nextState) => {
-        return nextState.highlights != this.state.highlights;
+        return nextState.highlights != this.state.highlights || nextProps.uid != this.props.uid;
     }
 
     render = () => {

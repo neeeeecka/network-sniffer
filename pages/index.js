@@ -62,7 +62,7 @@ class Index extends Component {
 
   getCurrentInspectPacket = () => {
     if (this.state.currentPacketDump) {
-      return <HexDump hexDump={this.state.currentPacketDump} />
+      return <HexDump hexDump={this.state.currentPacketDump} uid={Math.random()} />
     }
     return null;
   }
