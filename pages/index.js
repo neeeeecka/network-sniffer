@@ -7,7 +7,7 @@ import StaticHelpers from "./staticHelpers";
 
 const cURL = "http://localhost:2999";
 const packetColors = {
-  "udp": "bg-red-200",
+  "udp": "bg-blue-200",
   "tcp": "bg-green-200"
 };
 
@@ -22,28 +22,10 @@ class Index extends Component {
   };
 
   setTdWidth = (td, width) => {
-    if (firstCall) {
-
-      firstCall = false;
-      setTimeout(() => {
-        firstCall = true;
-
-        const cachedJoined = [0, 0, 0, 0];
-        cached.slice(cached.length - 4, cached.length).forEach((cacheArr, i) => {
-          cachedJoined[i] = cacheArr[i];
-        });
-
-        this.setState({ tdWidths: cachedJoined }, () => {
-          cached.length = 0;
-        });
-      }, 100);
-    }
-
     const newTdWidths = [...this.state.tdWidths];
     newTdWidths[td] = width;
-    console.log(newTdWidths);
-    cached.push(newTdWidths);
-    // cached = cached.slice(cached.length - 4, cached.length);
+
+    this.setState({ tdWidths: newTdWidths });
   }
 
   componentDidMount = async () => {
@@ -58,18 +40,22 @@ class Index extends Component {
         let newPackets = [...this.state.packets];
         const transportLayer = data.payload.payload.payload;
 
+        const destination = data.payload.payload.daddr.addr.join(".");
+        const source = data.payload.payload.saddr.addr.join(".");
+
         let length = 0;
         if (transportLayer.decoderName == "tcp") {
-          length = transportLayer.data.length;
+          length = transportLayer.dataLength;
+          // console.log(transportLayer);
         }
         if (transportLayer.decoderName == "udp") {
           length = transportLayer.length;
         }
-        newPackets.push({ source: "some", destination: "some", protocol: transportLayer.decoderName, length: length });
+        newPackets.push({ source: source, destination: destination, protocol: transportLayer.decoderName, length: length });
 
         newPackets = newPackets.slice(newPackets.length - 50, newPackets.length);
         this.setState({ packets: newPackets });
-        // console.log(data.payload.payload.payload);
+        // console.log(data.payload);
       }
     });
     console.log(socket);
@@ -129,7 +115,8 @@ let listenerExists = false;
 class Resizable extends Component {
   state = {
     holding: false,
-    width: "auto"
+    // width: "auto"
+    width: "150px"
   }
   clientX = 0;
 
