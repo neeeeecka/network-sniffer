@@ -84,7 +84,10 @@ io.on('connection', (socket) => {
   socket.on("filter", filter => {
     console.log(filter);
   });
-  
+  socket.on("decodeBuffer", (raw_buffer) => {
+    io.emit("decodeBuffer", "decoded buffer nigga promis");
+  });
+
 });
 
 

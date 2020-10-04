@@ -1,1 +1,1 @@
-IPv4 js spoofing app
+IPv4 js spoofing app using LibPcap linux library for packet capture.

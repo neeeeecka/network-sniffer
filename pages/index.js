@@ -7,6 +7,17 @@ const savedPackets = [];
 
 const socket = io("http://localhost:2999");
 
+function asyncEmit(eventName, data) {
+  return new Promise(function (resolve, reject) {
+    socket.emit(eventName, data);
+    socket.on(eventName, result => {
+      socket.off(eventName);
+      resolve(result);
+    });
+    setTimeout(reject, 1000);
+  });
+}
+
 class Index extends Component {
   state = {
     filter: "",
@@ -33,15 +44,20 @@ class Index extends Component {
     });
   }
 
-  inspectPacket = (packet) => {
+  inspectPacket = async (packet) => {
     savedPackets.push(packet);
     this.setState({ currentPacketInspect: packet });
+
+    if (this.state.currentPacketInspect) {
+      const raw_buffer = this.state.currentPacketInspect.buffer;
+      // socket.emit("decodeBuffer", raw_buffer);
+      const decoded = await asyncEmit("decodeBuffer", raw_buffer);
+      console.log(decoded);
+    }
   }
 
   getCurrentInspectPacket = () => {
-    if (this.state.currentPacketInspect) {
-      console.log(this.state.currentPacketInspect.buffer);
-    }
+
     return null;
   }
 
