@@ -5,7 +5,7 @@ import io from "socket.io-client";
 
 const savedPackets = [];
 
-const socket = io("http://localhost:2999");
+const socket = io("http://localhost:3009");
 
 function asyncEmit(eventName, data) {
   return new Promise(function (resolve, reject) {
@@ -22,6 +22,7 @@ class Index extends Component {
   state = {
     filter: "",
     currentPacketInspect: null,
+    currentPacketDump: null
   };
 
   constructor(props) {
@@ -53,11 +54,24 @@ class Index extends Component {
       // socket.emit("decodeBuffer", raw_buffer);
       const decoded = await asyncEmit("decodeBuffer", raw_buffer);
       console.log(decoded);
+      this.setState({ currentPacketDump: decoded });
     }
   }
 
   getCurrentInspectPacket = () => {
+    if (this.state.currentPacketDump) {
+      const dom = [];
+      const splitLines = this.state.currentPacketDump.split(/\r?\n/);
+      splitLines.forEach((line, i) => {
+        const colon = line.indexOf(":");
+        const lineStart = line.substring(0, colon);
+        const lineHex = line.substring(colon + 1, 4 * 8 + 8);
+        const lineAscii = line.substring(colon + 4 * 8 + 8 + 1, line.length - 1);
 
+        dom.push(<span key={i} className="block">{line}</span>);
+      });
+      return dom;
+    }
     return null;
   }
 

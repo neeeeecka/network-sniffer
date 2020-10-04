@@ -10,9 +10,9 @@ class TrafficReader {
             // console.log(" ICMP Packet: " + "raw_packet.buf.length" + " bytes.");
             // i++;
             // console.log(raw_packet);
-           io.emit("packet", packet);
-        //    console.log(packet);
-                
+            io.emit("packet", packet);
+            //    console.log(packet);
+
         });
         console.log("listening for packets at: " + networkInterface)
     }

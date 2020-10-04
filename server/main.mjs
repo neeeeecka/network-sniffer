@@ -11,6 +11,9 @@ import { networkInterfaces } from 'os';
 import socketio from "socket.io";
 import * as http from "http";
 
+import arrayBufferToBuffer from 'arraybuffer-to-buffer';
+import dump from "buffer-hexdump";
+
 const MongoClient = mongodb.MongoClient;
 // Connection URL
 const url = "mongodb://localhost:27017";
@@ -23,7 +26,7 @@ MongoClient.connect(url, { useUnifiedTopology: true },
     dbActions.init(client.db(dbName));
   });
 
-const port = 2999;
+const port = 3009;
 
 const app = express();
 const httpApp = http.createServer(app);
@@ -85,8 +88,10 @@ io.on('connection', (socket) => {
     console.log(filter);
   });
   socket.on("decodeBuffer", (raw_buffer) => {
-
-    io.emit("decodeBuffer", "decoded buffer nigga promis");
+    const buffer = arrayBufferToBuffer(raw_buffer);
+    // const strUtf8 = buffer.toString('utf8');
+    const dumped = dump(buffer);
+    io.emit("decodeBuffer", dumped);
   });
 
 });
