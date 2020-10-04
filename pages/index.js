@@ -11,6 +11,9 @@ const packetColors = {
   "tcp": "bg-green-200"
 };
 
+let cached = [];
+let firstCall = true;
+
 class Index extends Component {
   state = {
     filter: "",
@@ -19,9 +22,28 @@ class Index extends Component {
   };
 
   setTdWidth = (td, width) => {
+    if (firstCall) {
+
+      firstCall = false;
+      setTimeout(() => {
+        firstCall = true;
+
+        const cachedJoined = [0, 0, 0, 0];
+        cached.slice(cached.length - 4, cached.length).forEach((cacheArr, i) => {
+          cachedJoined[i] = cacheArr[i];
+        });
+
+        this.setState({ tdWidths: cachedJoined }, () => {
+          cached.length = 0;
+        });
+      }, 100);
+    }
+
     const newTdWidths = [...this.state.tdWidths];
     newTdWidths[td] = width;
-    this.setState({ tdWidths: newTdWidths });
+    console.log(newTdWidths);
+    cached.push(newTdWidths);
+    // cached = cached.slice(cached.length - 4, cached.length);
   }
 
   componentDidMount = async () => {
@@ -124,6 +146,9 @@ class Resizable extends Component {
 
     this.minWidth = this.ref.clientWidth;
     this.setState({ width: this.minWidth });
+    if (this.props.setTdWidth) {
+      this.props.setTdWidth(this.props.i, this.minWidth);
+    }
   }
   componentWillUnmount = () => {
     document.removeEventListener("mouseup", this.mouseUp);
@@ -133,7 +158,7 @@ class Resizable extends Component {
     this.setState({ holding: false });
   }
   mouseMove = (e) => {
-    if (this.state.holding) {
+    if (this.state.holding && this.props.setTdWidth) {
       let deltaX = e.clientX - this.clientX;
 
       let newWidth = StaticHelpers.clamp(this.state.width + deltaX, this.minWidth, this.maxWidth);
