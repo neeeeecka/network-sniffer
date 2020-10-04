@@ -7,9 +7,9 @@ class HexDump extends Component {
         const dom = [];
         const splitLines = this.props.hexDump.split(/\r?\n/);
 
-        for (let i = 0; i <= splitLines.length - quarterSize; i += quarterSize) {
+        for (let i = 0; i < Math.max(splitLines.length - quarterSize, 1); i += quarterSize) {
             dom.push(
-                <HexQuarter uid={this.props.uid} hexDumpLines={splitLines.slice(i, i + quarterSize)} />
+                <HexQuarter key={i} uid={this.props.uid} hexDumpLines={splitLines.slice(i, Math.min(splitLines.length, i + quarterSize))} />
             );
         }
         return <table className="block hexdump"><tbody>{dom}</tbody></table>;
@@ -29,13 +29,13 @@ class HexQuarter extends Component {
     }
 
     shouldComponentUpdate = (nextProps, nextState) => {
-        return nextState.highlights != this.state.highlights || nextProps.uid != this.props.uid;
+        return (nextState.highlights != this.state.highlights) || (nextProps.uid != this.props.uid);
     }
 
     render = () => {
         const dom = [];
 
-        for (let lineIndex = 0; lineIndex < quarterSize; lineIndex++) {
+        for (let lineIndex = 0; lineIndex < this.props.hexDumpLines.length; lineIndex++) {
             const line = this.props.hexDumpLines[lineIndex];
 
             const colon = line.indexOf(":");

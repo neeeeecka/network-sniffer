@@ -6,7 +6,7 @@ import HexDump from "./components/hexDump";
 
 const savedPackets = [];
 
-const socket = io("http://localhost:3009");
+const socket = io.connect("http://localhost:5000");
 
 function asyncEmit(eventName, data) {
   return new Promise(function (resolve, reject) {
@@ -15,7 +15,7 @@ function asyncEmit(eventName, data) {
       socket.off(eventName);
       resolve(result);
     });
-    setTimeout(reject, 1000);
+    setTimeout(reject, 5000);
   });
 }
 
@@ -48,21 +48,22 @@ class Index extends Component {
 
   inspectPacket = async (packet) => {
     savedPackets.push(packet);
-    this.setState({ currentPacketInspect: packet });
-
-    if (this.state.currentPacketInspect) {
-      const raw_buffer = this.state.currentPacketInspect.buffer;
-      // socket.emit("decodeBuffer", raw_buffer);
-      const decoded = await asyncEmit("decodeBuffer", raw_buffer);
-      console.log(decoded);
-      this.setState({ currentPacketDump: decoded });
-    }
+    this.setState({ currentPacketInspect: packet }, async () => {
+      if (this.state.currentPacketInspect) {
+        const raw_buffer = this.state.currentPacketInspect.buffer;
+        // socket.emit("decodeBuffer", raw_buffer);
+        const decoded = await asyncEmit("decodeBuffer", raw_buffer);
+        packet.uid = parseInt((Math.random() * 1000));
+        console.log(decoded);
+        this.setState({ currentPacketDump: decoded });
+      }
+    });
   }
 
 
   getCurrentInspectPacket = () => {
     if (this.state.currentPacketDump) {
-      return <HexDump hexDump={this.state.currentPacketDump} uid={Math.random()} />
+      return <HexDump hexDump={this.state.currentPacketDump} uid={this.state.currentPacketInspect.uid} />
     }
     return null;
   }

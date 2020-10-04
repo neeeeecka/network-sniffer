@@ -26,7 +26,7 @@ MongoClient.connect(url, { useUnifiedTopology: true },
     dbActions.init(client.db(dbName));
   });
 
-const port = 3009;
+const port = 5000;
 
 const app = express();
 const httpApp = http.createServer(app);
