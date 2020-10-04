@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
+    "arraybuffer-to-buffer": "0.0.7",
     "autoprefixer": "^9.7.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
