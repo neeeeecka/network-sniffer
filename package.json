@@ -33,6 +33,7 @@
     "postcss-preset-env": "^6.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "sass": "^1.26.11",
     "socket.io": "^2.3.0",
     "tailwindcss": "^1.4.4",
     "touch": "^3.1.0"

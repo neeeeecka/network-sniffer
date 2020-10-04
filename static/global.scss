@@ -1,0 +1,15 @@
+.td{
+    position: relative;
+    margin-right: 7px;
+    user-select: none;
+    &::before{
+        content: "";
+        cursor: e-resize;
+        position: absolute;
+        width:7px;
+        height: 1em;
+        left: calc(100%);
+        top:0;
+    }
+//   cursor: pointer;
+}

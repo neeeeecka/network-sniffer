@@ -70,13 +70,13 @@ httpApp.listen(port, () => {
 const interfaces = networkInterfaces();
 // console.log(interfaces);
 
-const sockets = [];
-
 const trafficReader = new TrafficReader("wlp2s0", io);
+
+// io.eio.pingTimeout = 1000;
+// io.eio.pingInterval = 1000;
 
 io.on('connection', (socket) => {
   console.log('connected', socket.id);
-  sockets.push(socket);
   socket.on("disconnectMe", () => {
     socket.disconnect();
     console.log("disconnected ", socket.id);
