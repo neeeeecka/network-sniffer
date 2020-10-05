@@ -51,16 +51,22 @@ class HexQuarter extends Component {
             let c = 0;
             for (let i = 1; i <= 16; i++) {
                 let cSave = c;
-                const hoverState = ((cSave + "-" + lineIndex) == this.state.highlights ? "bg-blue-400" : "");
+                const hoverState = ((cSave + "-" + lineIndex) == this.state.highlights ? " bg-blue-400" : "");
                 const hoverPos = cSave + "-" + lineIndex;
                 if (i % 2 == 0) {
-                    lineHexDom.push(
-                        <span key={c++} onMouseLeave={this.clearHighLight} onMouseOver={() => this.setHighlightAt(hoverPos)} className={hoverState + " px-2 py-1"}>{lineHexSplit[cSave]}</span>
+                    const lineHexChar = lineHexSplit[cSave];
+                    if (lineHexChar != "") {
+                        lineHexDom.push(
+                            <span key={c++} onMouseLeave={this.clearHighLight} onMouseOver={() => this.setHighlightAt(hoverPos)} className={hoverState + " py-1 px-2 "}>{lineHexChar}</span>
+                        );
+                    }
+                }
+                const lineAsciiChar = lineAscii[i - 1];
+                if (lineAsciiChar) {
+                    lineAsciiDom.push(
+                        <span key={i} onMouseLeave={this.clearHighLight} onMouseOver={() => this.setHighlightAt(hoverPos)} className={hoverState + " py-1"}>{lineAsciiChar}</span>
                     );
                 }
-                lineAsciiDom.push(
-                    <span key={i} onMouseLeave={this.clearHighLight} onMouseOver={() => this.setHighlightAt(hoverPos)} className={hoverState + " py-1"}>{lineAscii[i - 1]}</span>
-                );
             }
 
             dom.push(<tr key={lineIndex}>
