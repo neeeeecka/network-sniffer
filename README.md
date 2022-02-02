@@ -1,1 +1,12 @@
-IPv4 js spoofing app using LibPcap linux library for packet capture.
+_Linux tested only!_
+
+Simple network packet analyzer written using pcap library and node JS.
+
+for client:
+`npm run client`
+
+for server:
+`npm run server`
+
+![Alt text](img/1.png?raw=true "Title")
+![Alt text](img/2.png?raw=true "Title")

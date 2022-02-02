@@ -1,6 +1,7 @@
 import Vector2 from "./Vector2";
 import ReactDOMServer from "react-dom/server";
 import FrameHandler from "./FrameHandler";
+import React, { Component } from "react";
 
 class Rectangle {
   constructor(xy, wh) {
@@ -62,7 +63,7 @@ class Rectangle {
           transform: `translate(${this.xy.x}px, ${this.xy.y}px)`,
           pointerEvents: "none",
           position: "absolute",
-          zIndex: 12
+          zIndex: 12,
         }}
         id={debugId}
       />
@@ -74,16 +75,6 @@ class Rectangle {
     // el.style.height = this.wh.y;
 
     return debugId;
-    const update = deltaTime => {
-      rectDomEl.style.transform = `translate(${this.xy.x}px, ${this.xy.y}px)`;
-    };
-    if (!window.debugFrameHandler) {
-      const frameHandler = new FrameHandler(15, update, debugId);
-      window.debugFrameHandler = frameHandler;
-      console.log(window.debugFrameHandler);
-    } else {
-      window.debugFrameHandler.addUpdate(update, debugId);
-    }
   }
 }
 function makeid(length) {

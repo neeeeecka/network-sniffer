@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Rectangle from "../Rectangle";
-import Vector2 from "../Vector2";
+import Rectangle from "../../lib/Rectangle";
+import Vector2 from "../../lib/Vector2";
 
 class Unit extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -41,19 +41,19 @@ class Unit extends Component {
     if (holdState._id === data._id) {
       style = {
         transform: `translate(${xy.x}px, ${xy.y}px)`,
-        width: holdState.isHolded ? holdState.rect.wh.x + "px" : "auto"
+        width: holdState.isHolded ? holdState.rect.wh.x + "px" : "auto",
       };
     }
     return (
       <div
         className={className}
-        onMouseDown={ev => {
+        onMouseDown={(ev) => {
           if (ev.button == 0) {
             this.props.onUnitClick(data._id, ev);
           }
         }}
         style={style}
-        ref={el => {
+        ref={(el) => {
           if (!this.props.element) {
             this.props.onUnitInit(data._id, el);
           }
@@ -87,7 +87,7 @@ class Unit extends Component {
 class Expander extends Component {
   state = {
     rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
-    shouldExpand: false
+    shouldExpand: false,
   };
   expander = {};
   shouldComponentUpdate(nextProps, nextState) {
@@ -176,7 +176,7 @@ class Expander extends Component {
           "block transform-duration-15 " +
           (this.state.shouldExpand ? "h-16" : "h-0")
         }
-        ref={el => {
+        ref={(el) => {
           this.element = el;
           // console.log("reffed - ", this.props.listId);
         }}
@@ -227,7 +227,7 @@ class UnitContainer extends Component {
     return (
       <div
         className="w-1/2 m-1"
-        ref={el => {
+        ref={(el) => {
           if (el) {
             this.props.onInit(el);
           }

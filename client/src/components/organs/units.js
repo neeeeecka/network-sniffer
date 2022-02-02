@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import UnitContainer from "./unitContainer";
 import Header from "./header";
-import Rectangle from "../Rectangle";
-import Vector2 from "../Vector2";
-import FrameHandler from "../FrameHandler";
+import Rectangle from "../../lib/Rectangle";
+import Vector2 from "../../lib/Vector2";
+import FrameHandler from "../../lib/FrameHandler";
 
 class Units extends Component {
   state = {
     containers: {
       active: null,
-      blocked: null
+      blocked: null,
     },
     holdingLocation: {
       rect: new Rectangle(new Vector2(0, 0), new Vector2(0, 0)),
@@ -17,12 +17,12 @@ class Units extends Component {
       cursorPos: new Vector2(0, 0),
       _id: null,
       isAnim: false,
-      isHolded: false
+      isHolded: false,
     },
     selectedUnit: undefined,
     isHolding: false,
     shouldUpdate: false,
-    expandedIndex: null
+    expandedIndex: null,
   };
   onUnitClick = (_id, ev) => {
     this.setState({ isHolding: true });
@@ -34,7 +34,7 @@ class Units extends Component {
 
     const timeout = setTimeout(() => {
       if (this.state.isHolding) {
-        const unit = this.props.units.find(unit => unit.data._id === _id);
+        const unit = this.props.units.find((unit) => unit.data._id === _id);
         const cRect = unit.el.getBoundingClientRect();
 
         const newRect = new Rectangle(
@@ -57,7 +57,7 @@ class Units extends Component {
         this.setState({
           holdingLocation: newHoldingState,
           selectedUnit: unit,
-          shouldUpdate: true
+          shouldUpdate: true,
         });
       } else {
         clearTimeout(timeout);
@@ -66,13 +66,13 @@ class Units extends Component {
   };
   curMousePos = new Vector2(0, 0);
   componentDidMount() {
-    window.addEventListener("mouseup", ev => {
+    window.addEventListener("mouseup", (ev) => {
       const holdState = this.state.holdingLocation;
 
       if (this.state.isHolding && this.state.selectedUnit) {
         const containers = this.state.containers;
         let activeCont = undefined;
-        Object.keys(this.state.containers).forEach(key => {
+        Object.keys(this.state.containers).forEach((key) => {
           if (this.state.containers[key]) {
             activeCont = key;
           }
@@ -100,7 +100,7 @@ class Units extends Component {
             holdingLocation: newHoldState,
             isHolding: false,
             shouldUpdate: false,
-            selectedUnit: undefined
+            selectedUnit: undefined,
           },
           () => {
             const t = setTimeout(() => {
@@ -108,7 +108,7 @@ class Units extends Component {
               newHoldState.isAnim = false;
 
               this.setState({
-                holdingLocation: newHoldState
+                holdingLocation: newHoldState,
               });
               clearTimeout(t);
             }, 0.25 * 1000);
@@ -116,7 +116,7 @@ class Units extends Component {
         );
       }
     });
-    window.addEventListener("mousemove", ev => {
+    window.addEventListener("mousemove", (ev) => {
       if (this.state.isHolding) {
         this.curMousePos.modify(ev.clientX, ev.clientY);
       }
@@ -128,7 +128,7 @@ class Units extends Component {
 
   lastMousePos = { x: 0, y: 0 };
   debugId = null;
-  update = deltaTime => {
+  update = (deltaTime) => {
     if (this.state.shouldUpdate) {
       const movement = this.curMousePos.subtract(this.lastMousePos);
       this.lastMousePos = this.curMousePos.clone();
@@ -144,7 +144,7 @@ class Units extends Component {
         startOffset: holdState.startOffset,
         cursorPos: this.curMousePos,
         _id: holdState._id,
-        isHolded: true
+        isHolded: true,
       };
 
       const containers = { active: false, blocked: false };
@@ -160,13 +160,13 @@ class Units extends Component {
       this.setState({ holdingLocation: newHoldState, containers: containers });
     }
   };
-  setExpandedIndex = index => {
+  setExpandedIndex = (index) => {
     this.setState({ expandedIndex: index });
   };
   unitInit = (_id, el) => {
     console.log("Re-inited");
     const newUnits = [...this.props.units];
-    const found = newUnits.find(unit => unit.data._id === _id);
+    const found = newUnits.find((unit) => unit.data._id === _id);
     found.el = el;
     this.setState({ units: newUnits });
   };
@@ -180,7 +180,7 @@ class Units extends Component {
       rect: new Rectangle(
         new Vector2(rect.left, rect.top),
         new Vector2(el.offsetWidth, el.offsetHeight)
-      )
+      ),
     };
     if (type) {
       this.trueContainer = container;
@@ -194,12 +194,11 @@ class Units extends Component {
       <div className="flex p-2">
         <UnitContainer
           title="Active users"
-          units={this.props.units.filter(u => u.data.type === "active")}
+          units={this.props.units.filter((u) => u.data.type === "active")}
           onUnitClick={this.onUnitClick}
-          onInit={el => {
+          onInit={(el) => {
             this.initCont(el, false);
           }}
-          onUnitInit={this.props.onUnitInit}
           onUnitInit={this.unitInit}
           holdState={this.state.holdingLocation}
           expand={this.state.containers.active}
@@ -207,9 +206,9 @@ class Units extends Component {
         />
         <UnitContainer
           title="Blocked users"
-          units={this.props.units.filter(u => u.data.type === "blocked")}
+          units={this.props.units.filter((u) => u.data.type === "blocked")}
           onUnitClick={this.onUnitClick}
-          onInit={el => {
+          onInit={(el) => {
             this.initCont(el, true);
           }}
           onUnitInit={this.props.onUnitInit}

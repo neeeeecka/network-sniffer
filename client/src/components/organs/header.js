@@ -8,7 +8,7 @@ class Header extends Component {
     return (
       <div className="p-3 bg-gray-900 shadow-inner">
         <span className="text-gray-400 font-medium">
-          JS Local wi-fi IPv4 ARP spoofer
+          Simple JS network sniffer
         </span>
       </div>
     );
